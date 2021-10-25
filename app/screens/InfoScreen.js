@@ -13,7 +13,7 @@ function InfoScreen(props) {
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
-        <AppText>Your Location: </AppText>
+        <AppText>Your Zone: </AppText>
         <AppButton
           title="Get Location"
           onPress={() => console.log("pressed")}

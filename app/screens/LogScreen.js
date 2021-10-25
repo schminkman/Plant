@@ -4,6 +4,7 @@ import { SafeAreaView, View, StyleSheet } from "react-native";
 import colors from "../config/colors";
 
 import LogCard from "../components/LogCard";
+import AppButton from "../components/AppButton";
 
 function LogScreen(props) {
   return (
@@ -16,6 +17,9 @@ function LogScreen(props) {
           caption="Notes: This plant is doing well on the patio! "
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <AppButton title="+" onPress={() => console.log("pressed")} />
+      </View>
     </SafeAreaView>
   );
 }
@@ -26,6 +30,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey,
     padding: 20,
     paddingTop: 20,
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
     flexDirection: "column",

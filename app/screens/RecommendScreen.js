@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import colors from "../config/colors";
@@ -10,16 +10,23 @@ function RecommendScreen(props) {
   return (
     <SafeAreaView style={styles.background}>
       <AppText style={styles.header}>Recommendations</AppText>
-      <Card
-        title="Dracaena fragrans"
-        subtitle="Zones 3-10"
-        image={require("../assets/cornplant.jpg")}
-      />
-      <Card
-        title="Okra"
-        subtitle="Zones 2-8"
-        image={require("../assets/okraplant.jpg")}
-      />
+      <ScrollView>
+        <Card
+          title="Dracaena fragrans"
+          subtitle="Zones 3-10"
+          image={require("../assets/cornplant.jpg")}
+        />
+        <Card
+          title="Okra"
+          subtitle="Zones 2-8"
+          image={require("../assets/okraplant.jpg")}
+        />
+        <Card
+          title="Bell Pepper"
+          subtitle="Zones 2-6"
+          image={require("../assets/pepperplant.jpg")}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }

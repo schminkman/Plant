@@ -1,6 +1,8 @@
 import React from "react";
 import { View, SafeAreaView, StyleSheet, Image } from "react-native";
 import AppText from "../components/AppText";
+import Card from "../components/Card";
+import TextCard from "../components/TextCard";
 
 import colors from "../config/colors";
 
@@ -9,15 +11,11 @@ function MapScreen(props) {
     <SafeAreaView style={styles.background}>
       <AppText style={styles.header}>Interactive Map</AppText>
       <View style={styles.container}>
+        <TextCard caption="Tap any markers to reveal additional information" />
         <Image
           style={styles.image}
           source={require("../assets/plantzonemap.png")}
         />
-      </View>
-      <View style={styles.textContainer}>
-        <AppText style={styles.subtext}>
-          Tap any markers to reveal additional information
-        </AppText>
       </View>
     </SafeAreaView>
   );

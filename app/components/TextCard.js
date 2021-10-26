@@ -4,11 +4,11 @@ import { View, StyleSheet } from "react-native";
 import AppText from "./AppText";
 import colors from "../config/colors";
 
-function TextCard({ caption }) {
+function TextCard({ caption, style }) {
   return (
     <View style={styles.card}>
       <View style={styles.container}>
-        <AppText style={styles.caption}>{caption}</AppText>
+        <AppText style={[styles.caption, style]}>{caption}</AppText>
       </View>
     </View>
   );

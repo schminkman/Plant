@@ -7,6 +7,7 @@ import LogScreen from "../screens/LogScreen";
 import MapScreen from "../screens/MapScreen";
 import RecommendScreen from "../screens/RecommendScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import LogNavigator from "./LogNavigator";
 
 // Handle navigation with tabs, from react-navigation
 const Tab = createBottomTabNavigator();
@@ -51,7 +52,7 @@ const AppNavigator = () => (
     />
     <Tab.Screen
       name="Log"
-      component={LogScreen}
+      component={LogNavigator}
       options={{
         headerShown: false,
         tabBarIcon: ({ size, color }) => (

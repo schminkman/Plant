@@ -6,7 +6,7 @@ import colors from "../config/colors";
 import LogCard from "../components/LogCard";
 import AppButton from "../components/AppButton";
 
-function LogScreen(props) {
+function LogScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
@@ -18,7 +18,7 @@ function LogScreen(props) {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <AppButton title="+" onPress={() => console.log("pressed")} />
+        <AppButton title="+" onPress={() => navigation.navigate("Add Plant")} />
       </View>
     </SafeAreaView>
   );

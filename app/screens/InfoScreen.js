@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { auth } from "../../firebase";
 // import * as Location from "expo-location";
 // import * as Permissions from "expo-permissions";
 
@@ -9,15 +10,18 @@ import AppButton from "../components/AppButton";
 
 import colors from "../config/colors";
 
-function InfoScreen(props) {
+function InfoScreen({ navigation }) {
+  const handleLogOut = () => {
+    auth.signOut().then(() => {
+      navigation.replace("Welcome");
+    });
+  };
+
   return (
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
-        <AppText>Your Zone: </AppText>
-        <AppButton
-          title="Get Location"
-          onPress={() => console.log("pressed")}
-        />
+        <AppText>Logged in as: {auth.currentUser?.email} </AppText>
+        <AppButton title="Log Out" onPress={handleLogOut} />
       </View>
     </SafeAreaView>
   );

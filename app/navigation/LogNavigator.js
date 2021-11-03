@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AddPlantScreen from "../screens/AddPlantScreen";
+import AddSightingScreen from "../screens/AddSightingScreen";
 import LogScreen from "../screens/LogScreen";
 
 const Stack = createStackNavigator();
@@ -15,7 +15,7 @@ const LogNavigator = () => (
         headerShown: false,
       }}
     />
-    <Stack.Screen name="Add Plant" component={AddPlantScreen} />
+    <Stack.Screen name="AddSighting" component={AddSightingScreen} />
   </Stack.Navigator>
 );
 

@@ -15,16 +15,22 @@ import LogScreen from "./app/screens/LogScreen";
 import Card from "./app/components/Card";
 import colors from "./app/config/colors";
 import AppNavigator from "./app/navigation/AppNavigator";
+import AuthNavigator from "./app/navigation/AuthNavigator";
 import AppTextInput from "./app/components/AppTextInput";
-import AddPlantScreen from "./app/screens/AddPlantScreen";
+import AddScreen from "./app/screens/AddSightingScreen";
 import AppPicker from "./app/components/AppPicker";
+import LoginScreen from "./app/screens/LoginScreen";
+import SignupScreen from "./app/screens/SignupScreen";
 
 export default function App() {
   return (
+    // <NavigationContainer>
+    //   <AppNavigator />
+    // </NavigationContainer>
+    // <WelcomeScreen />
     <NavigationContainer>
-      <AppNavigator />
+      <AuthNavigator />
     </NavigationContainer>
-    // <AddPlantScreen />
   );
 }
 

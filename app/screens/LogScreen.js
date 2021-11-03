@@ -11,14 +11,17 @@ function LogScreen({ navigation }) {
     <SafeAreaView style={styles.background}>
       <View style={styles.container}>
         <LogCard
-          title="My Corn Plant"
-          subtitle="Zone 5"
-          status="Succeeding"
-          caption="Notes: This plant is doing well on the patio! "
+          title="Species"
+          subtitle="Location"
+          status="Recent (?)"
+          caption="Notes: Saw a whole bunch of them "
         />
       </View>
       <View style={styles.buttonContainer}>
-        <AppButton title="+" onPress={() => navigation.navigate("Add Plant")} />
+        <AppButton
+          title="+"
+          onPress={() => navigation.navigate("AddSighting")}
+        />
       </View>
     </SafeAreaView>
   );

@@ -36,7 +36,7 @@ const AppNavigator = () => (
         ),
       }}
     />
-    <Tab.Screen
+    {/* <Tab.Screen
       name="Recommend"
       component={RecommendScreen}
       options={{
@@ -49,7 +49,7 @@ const AppNavigator = () => (
           />
         ),
       }}
-    />
+    /> */}
     <Tab.Screen
       name="Log"
       component={LogNavigator}

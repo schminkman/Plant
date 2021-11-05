@@ -1,15 +1,12 @@
 // outside sources used to help implement authentication in the app: https://www.youtube.com/watch?v=ql4J6SpLXZA&ab_channel=MadeWithMatt
 
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import colors from "../config/colors";
-import Screen from "../components/Screen";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
-import { useNavigation } from "@react-navigation/core";
-import AppNavigator from "../navigation/AppNavigator";
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -20,7 +17,13 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.navigate("Home");
+        if (user.uid === "JUr0vcYHRIgTmxQZYfC3kiCnRIs1") {
+          // hardcoded for now will need to have this dynamically check if user is admin from whitelist
+          navigation.replace("A_Home");
+        } else {
+          navigation.replace("Home");
+          console.log(user.uid); // for debugging
+        }
       }
     });
 
@@ -32,7 +35,7 @@ function LoginScreen({ navigation }) {
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("logged in as: ", user.email);
+        console.log("logged in as: ", user.email); // for debugging
       })
       .catch((error) => alert(error.message));
   };

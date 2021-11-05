@@ -21,16 +21,18 @@ import AddScreen from "./app/screens/AddSightingScreen";
 import AppPicker from "./app/components/AppPicker";
 import LoginScreen from "./app/screens/LoginScreen";
 import SignupScreen from "./app/screens/SignupScreen";
+import A_InfoScreen from "./app/admin/A_InfoScreen";
+import AdminNavigator from "./app/navigation/AdminNavigator";
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <AppNavigator />
-    // </NavigationContainer>
-    // <WelcomeScreen />
     <NavigationContainer>
       <AuthNavigator />
     </NavigationContainer>
+    // <A_InfoScreen />
+    // <NavigationContainer>
+    //   <AdminNavigator />
+    // </NavigationContainer>
   );
 }
 

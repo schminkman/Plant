@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Navigation, NavigationContainer } from "@react-navigation/native";
+import { IconButton, Colors } from "react-native-paper";
 
 import Screen from "../components/Screen";
 import AppTextInput from "../components/AppTextInput";
@@ -17,6 +18,7 @@ const statusCats = [
 
 function AddSightingScreen({ navigation }) {
   const [status, setStatus] = useState();
+
   return (
     <View>
       <View style={styles.container}>
@@ -28,7 +30,16 @@ function AddSightingScreen({ navigation }) {
           icon="battery-70"
           placeholder="Status"
         /> */}
-        <AppImagePicker />
+        <AppImagePicker>
+          <TouchableOpacity>
+            <IconButton
+              icon="camera"
+              color={colors.primary}
+              size={20}
+              onPress={() => console.log("pressed")}
+            />
+          </TouchableOpacity>
+        </AppImagePicker>
         <AppTextInput icon="square-edit-outline" placeholder="Notes..." />
       </View>
       <View style={styles.container}>

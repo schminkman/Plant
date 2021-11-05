@@ -2,8 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { auth } from "../../firebase";
-// import * as Location from "expo-location";
-// import * as Permissions from "expo-permissions";
 
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";

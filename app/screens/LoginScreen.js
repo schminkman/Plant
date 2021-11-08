@@ -7,21 +7,20 @@ import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
+import { Admins } from "../admin/A_WhiteList";
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //   const navigation = useNavigation;
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        if (user.uid === "JUr0vcYHRIgTmxQZYfC3kiCnRIs1") {
-          // hardcoded for now will need to have this dynamically check if user is admin from whitelist
-          navigation.replace("A_Home");
+        if (Admins.includes(user.uid)) {
+          // if user's uid is contained in admin whitelist
+          navigation.replace("A_Home"); // then take to admin pages via "A_Home" (AdminNavigator)
         } else {
-          navigation.replace("Home");
+          navigation.replace("Home"); // take to typical pages via "Home" (AppNavigator)
           console.log(user.uid); // for debugging
         }
       }

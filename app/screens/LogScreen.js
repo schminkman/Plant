@@ -1,23 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, StyleSheet } from "react-native";
 
 import colors from "../config/colors";
+import firebase from "../../firebase";
 
 import LogCard from "../components/LogCard";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
+import SightingList from "../components/SightingList";
 
 function LogScreen({ navigation }) {
+  // const [sightingList, setSightingList] = useState();
+
+  // useEffect(() => {
+  //   const sightingRef = firebase.database().ref("Sightings");
+  //   sightingRef.on("value", (snapshot) => {
+  //     const sightings = snapshot.val();
+  //     const sightingList = [];
+  //     for (let id in sightings) {
+  //       sightingList.push(sightings[id]);
+  //     }
+  //     setSightingList(sightingList);
+  //   });
+  // }, []);
+
   return (
     <SafeAreaView style={styles.background}>
-      <View style={styles.container}>
-        <LogCard
-          title="Species"
-          subtitle="Location"
-          status="Recent (?)"
-          caption="Notes: Saw a whole bunch of them "
-        />
-      </View>
+      <SightingList />
       <View style={styles.buttonContainer}>
         <AppButton
           title="+"
@@ -33,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.grey,
     padding: 20,
-    paddingTop: 20,
+    paddingTop: 75,
   },
   buttonContainer: {
     justifyContent: "center",

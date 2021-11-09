@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { IconButton, Colors } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
@@ -52,6 +53,14 @@ function AppImagePicker({ children }) {
   return (
     <React.Fragment>
       <View style={styles.container}>
+        {/* <TouchableOpacity style={styles.icons} onPress={pickImage}>
+          <MaterialCommunityIcons
+            name="camera-plus-outline"
+            size={20}
+            color={"#000"}
+          />
+          <AppText style={styles.text}>Upload Image</AppText>
+        </TouchableOpacity> */}
         <AppText style={styles.text}>Upload Image</AppText>
         <IconButton
           icon="camera"
@@ -73,15 +82,21 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     flexDirection: "row",
     width: "80%",
+    height: 60,
     padding: 15,
-    marginVertical: 10,
+    marginVertical: 8,
     alignItems: "center",
+    // justifyContent: "center",
+  },
+  icons: {
+    alignSelf: "flex-start",
   },
   text: {
     paddingLeft: 10,
     fontWeight: "normal",
     fontSize: 18,
     color: colors.black,
+    // alignSelf: "flex-end",
     flex: 1,
   },
 });

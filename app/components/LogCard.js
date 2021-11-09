@@ -36,11 +36,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   leftColumnContainer: {
+    flex: 1,
     flexDirection: "column",
   },
   rightColumnContainer: {
+    flex: 1,
     flexDirection: "column",
-    paddingLeft: 110,
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
   },
   rowContainer: {
     flexDirection: "row",
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginBottom: 0,
+    textTransform: "uppercase",
   },
 });
 

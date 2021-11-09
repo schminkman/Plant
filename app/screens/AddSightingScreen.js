@@ -10,6 +10,7 @@ import AppPicker from "../components/AppPicker";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import AppImagePicker from "../components/AppImagePicker";
+import routes from "../navigation/routes";
 
 const statusCats = [
   { label: "Succeeding", value: 1 },
@@ -30,7 +31,7 @@ function AddSightingScreen({ navigation }) {
           icon="battery-70"
           placeholder="Status"
         /> */}
-        <AppImagePicker>
+        {/* <AppImagePicker>
           <TouchableOpacity>
             <IconButton
               icon="camera"
@@ -39,13 +40,14 @@ function AddSightingScreen({ navigation }) {
               onPress={() => console.log("pressed")}
             />
           </TouchableOpacity>
-        </AppImagePicker>
+        </AppImagePicker> */}
+        <AppImagePicker />
         <AppTextInput icon="square-edit-outline" placeholder="Notes..." />
       </View>
       <View style={styles.container}>
         <AppButton
           title="Add to Logbook!"
-          onPress={() => navigation.navigate("Logbook")}
+          onPress={() => navigation.navigate(routes.LOGBOOK)}
         />
       </View>
     </View>

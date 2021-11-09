@@ -6,11 +6,12 @@ import { auth } from "../../firebase";
 
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
+import routes from "../navigation/routes";
 
 function A_InfoScreen({ navigation }) {
   const handleLogOut = () => {
     auth.signOut().then(() => {
-      navigation.replace("Welcome");
+      navigation.replace(routes.WELCOME);
     });
   };
 

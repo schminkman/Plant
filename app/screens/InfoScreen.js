@@ -5,13 +5,14 @@ import { auth } from "../../firebase";
 
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
+import routes from "../navigation/routes";
 
 import colors from "../config/colors";
 
 function InfoScreen({ navigation }) {
   const handleLogOut = () => {
     auth.signOut().then(() => {
-      navigation.replace("Welcome");
+      navigation.replace(routes.WELCOME);
     });
   };
 

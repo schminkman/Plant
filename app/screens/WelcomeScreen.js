@@ -7,6 +7,7 @@ import {
 
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
+import routes from "../navigation/routes";
 
 function WelcomeScreen({ navigation }) {
   // const navigation = useNavigation;
@@ -21,12 +22,12 @@ function WelcomeScreen({ navigation }) {
       <AppButton
         title="Log In"
         color={"secondary"}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate(routes.LOGIN)}
       />
       <AppButton
         title="Sign Up"
         color={"primary"}
-        onPress={() => navigation.navigate("Signup")}
+        onPress={() => navigation.navigate(routes.SIGNUP)}
       />
     </ImageBackground>
   );

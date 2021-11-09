@@ -1,27 +1,68 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
+  Image,
   Text,
+  Platform,
   StyleSheet,
   TouchableOpacity,
   View,
   Button,
   TouchableHighlight,
 } from "react-native";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 import { IconButton, Colors } from "react-native-paper";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
 import AppButton from "./AppButton";
 
+// using the recommended code at https://docs.expo.dev/versions/latest/sdk/imagepicker/
+
 function AppImagePicker({ children }) {
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("This feature requires permission to access the camera roll!");
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   return (
     <React.Fragment>
       <View style={styles.container}>
         <AppText style={styles.text}>Upload Image</AppText>
-        {/* <Button title="+" onPress={() => console.log("pressed")} /> */}
-        <TouchableOpacity>{children}</TouchableOpacity>
+        <IconButton
+          icon="camera"
+          color={colors.primary}
+          size={20}
+          onPress={pickImage}
+        />
       </View>
+      {image && (
+        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      )}
     </React.Fragment>
   );
 }

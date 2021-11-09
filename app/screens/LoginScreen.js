@@ -8,6 +8,7 @@ import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
 import { Admins } from "../admin/A_WhiteList";
+import routes from "../navigation/routes";
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -18,9 +19,9 @@ function LoginScreen({ navigation }) {
       if (user) {
         if (Admins.includes(user.uid)) {
           // if user's uid is contained in admin whitelist
-          navigation.replace("A_Home"); // then take to admin pages via "A_Home" (AdminNavigator)
+          navigation.replace(routes.A_HOME); // then take to admin pages via "A_Home" (AdminNavigator)
         } else {
-          navigation.replace("Home"); // take to typical pages via "Home" (AppNavigator)
+          navigation.replace(routes.HOME); // take to typical pages via "Home" (AppNavigator)
           console.log(user.uid); // for debugging
         }
       }

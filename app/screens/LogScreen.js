@@ -5,6 +5,7 @@ import colors from "../config/colors";
 
 import LogCard from "../components/LogCard";
 import AppButton from "../components/AppButton";
+import routes from "../navigation/routes";
 
 function LogScreen({ navigation }) {
   return (
@@ -20,7 +21,7 @@ function LogScreen({ navigation }) {
       <View style={styles.buttonContainer}>
         <AppButton
           title="+"
-          onPress={() => navigation.navigate("AddSighting")}
+          onPress={() => navigation.navigate(routes.ADD_SIGHTING)}
         />
       </View>
     </SafeAreaView>

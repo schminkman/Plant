@@ -7,6 +7,7 @@ import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
+import routes from "../navigation/routes";
 
 function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ function SignupScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigation.replace("Welcome");
+        navigation.replace(routes.WELCOME);
       }
     });
 

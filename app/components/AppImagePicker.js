@@ -13,6 +13,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { IconButton, Colors } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { uuid } from "uuidv4";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
@@ -20,7 +21,7 @@ import AppButton from "./AppButton";
 
 // using the recommended code at https://docs.expo.dev/versions/latest/sdk/imagepicker/
 
-function AppImagePicker({ children }) {
+function AppImagePicker(props) {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
@@ -53,14 +54,6 @@ function AppImagePicker({ children }) {
   return (
     <React.Fragment>
       <View style={styles.container}>
-        {/* <TouchableOpacity style={styles.icons} onPress={pickImage}>
-          <MaterialCommunityIcons
-            name="camera-plus-outline"
-            size={20}
-            color={"#000"}
-          />
-          <AppText style={styles.text}>Upload Image</AppText>
-        </TouchableOpacity> */}
         <AppText style={styles.text}>Upload Image</AppText>
         <IconButton
           icon="camera"

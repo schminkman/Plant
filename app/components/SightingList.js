@@ -8,9 +8,8 @@ import LogCard from "../components/LogCard";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 import AppText from "./AppText";
-import App from "../../App";
 
-// sources used for the creation of this  component: https://www.youtube.com/watch?v=v0TKYSkZ2tI&ab_channel=DailyWebCoding
+// sources used to aid in the creation of this component: https://www.youtube.com/watch?v=v0TKYSkZ2tI&ab_channel=DailyWebCoding
 
 function SightingList() {
   const [sightingList, setSightingList] = useState();

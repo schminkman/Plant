@@ -10,20 +10,6 @@ import routes from "../navigation/routes";
 import SightingList from "../components/SightingList";
 
 function LogScreen({ navigation }) {
-  // const [sightingList, setSightingList] = useState();
-
-  // useEffect(() => {
-  //   const sightingRef = firebase.database().ref("Sightings");
-  //   sightingRef.on("value", (snapshot) => {
-  //     const sightings = snapshot.val();
-  //     const sightingList = [];
-  //     for (let id in sightings) {
-  //       sightingList.push(sightings[id]);
-  //     }
-  //     setSightingList(sightingList);
-  //   });
-  // }, []);
-
   return (
     <SafeAreaView style={styles.background}>
       <SightingList />

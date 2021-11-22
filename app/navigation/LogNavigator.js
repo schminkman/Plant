@@ -15,7 +15,7 @@ const LogNavigator = () => (
         headerShown: false,
       }}
     />
-    <Stack.Screen name="AddSighting" component={AddSightingScreen} />
+    <Stack.Screen name="Add Sighting" component={AddSightingScreen} />
   </Stack.Navigator>
 );
 

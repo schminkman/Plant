@@ -5,10 +5,14 @@ import { AntDesign } from "@expo/vector-icons";
 import AppText from "./AppText";
 import colors from "../config/colors";
 
-function AppButton({ title, onPress, color = "primary" }) {
+function AppButton({ title, onPress, width = "80%", color = "primary" }) {
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors[color] }]}
+      style={[
+        styles.button,
+        { backgroundColor: colors[color] },
+        { width: width },
+      ]}
       onPress={onPress}
     >
       <Text style={styles.text}>{title}</Text>

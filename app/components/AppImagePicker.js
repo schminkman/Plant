@@ -13,7 +13,6 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { IconButton, Colors } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { uuid } from "uuidv4";
 
 import AppText from "./AppText";
 import colors from "../config/colors";

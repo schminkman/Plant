@@ -10,4 +10,5 @@ export default {
   steel: "#919391",
   green: "#42DA31",
   pink: "#F525B9",
+  red: "#F44242",
 };

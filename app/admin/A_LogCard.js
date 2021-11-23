@@ -1,12 +1,25 @@
-import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, Text, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  FlatList,
+  Button,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 import firebase from "../../firebase";
+import AppButton from "../components/AppButton";
 
 import colors from "../config/colors";
-import AppText from "./AppText";
+import AppText from "../components/AppText";
 
-function LogCard({ title, location, source, type, caption }) {
+function A_LogCard({ title, location, source, type, caption, ID }) {
   const [imageURL, setImageURL] = useState();
+  //   const [ourKey, setOurKey] = useState();
 
   const getImage = async (source) => {
     let imageRef = firebase.storage().ref(source);
@@ -22,12 +35,40 @@ function LogCard({ title, location, source, type, caption }) {
 
   getImage(source);
 
+  const sightingsRef = firebase.database().ref("Sightings");
+
+  const nowDelete = () => {
+    sightingsRef.orderByValue().on("value", (snapshot) => {
+      snapshot.forEach((data) => {
+        // console.log("data.val(): ");
+        // console.log(data.val().id);
+        if (data.val().id === ID) {
+          //   console.log(data.key);
+          key = data.key;
+          sightingsRef.child(key).remove();
+        }
+      });
+    });
+  };
+
+  const handleDelete = () => {
+    nowDelete();
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.rowContainer}>
         <View style={styles.leftColumnContainer}>
           <AppText style={styles.title}>{title}</AppText>
           <AppText style={styles.status}>{type}</AppText>
+          <View style={styles.buttoncontainer}>
+            <Button
+              title="Delete"
+              color={colors.red}
+              style={styles.button}
+              onPress={handleDelete}
+            />
+          </View>
         </View>
         <View style={styles.rightColumnContainer}>
           <AppText style={styles.subtitle}>{location}</AppText>
@@ -40,6 +81,14 @@ function LogCard({ title, location, source, type, caption }) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    width: 10,
+    borderRadius: 50,
+  },
+  buttoncontainer: {
+    width: 80,
+    top: 60,
+  },
   caption: {
     color: colors.steel,
     fontSize: 12,
@@ -91,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogCard;
+export default A_LogCard;

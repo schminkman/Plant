@@ -25,6 +25,7 @@ import firebase from "../../firebase";
 import * as Firebase from "firebase";
 import database from "../../firebase";
 import routes from "../navigation/routes";
+import { getProviderStatusAsync } from "expo-location";
 
 // const storage = getStorage();
 
@@ -32,8 +33,6 @@ const typeCats = [
   { label: "Animal", value: 1 },
   { label: "Plant", value: 2 },
 ];
-
-const imagePointer = 0;
 
 // const typeCats = ["Animal", "Plant"];
 
@@ -43,6 +42,7 @@ function AddSightingScreen({ navigation }) {
   const [sightingNotes, setSightingNotes] = useState("");
   const [image, setImage] = useState(null);
   const [imageUUID, setImageUUID] = useState("");
+  const [identifier, setIdentifier] = useState("");
 
   // function which sets species to input text when we change the input text
   const handleOnChangeSpecies = (text) => {
@@ -128,6 +128,29 @@ function AddSightingScreen({ navigation }) {
   };
 
   ////////////////////////////////////////////////////////////////////////// end image handling
+
+  // had to put getID() call inside of useEffect so that we could setState for identifier
+  let num = 0;
+  useEffect(() => {
+    getID();
+  });
+
+  // get the next sighting's uniquie identifier
+  const getID = (async = () => {
+    const sightingsRef = firebase.database().ref("Sightings");
+    sightingsRef
+      .orderByValue()
+      .limitToLast(1)
+      .on("value", (snapshot) => {
+        snapshot.forEach((data) => {
+          console.log("data.val().id: ");
+          console.log(data.val().id);
+          num = data.val().id + 1;
+          setIdentifier(num);
+        });
+      });
+  });
+
   // add sighting to database
   const createSighting = () => {
     const sightingRef = firebase.database().ref("Sightings");
@@ -137,6 +160,7 @@ function AddSightingScreen({ navigation }) {
       type: speciesType,
       image: imageUUID,
       notes: sightingNotes,
+      id: identifier,
     };
 
     sightingRef.push(sighting); // push to database

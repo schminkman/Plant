@@ -38,8 +38,6 @@ function SightingList() {
             location="Location"
             type={sighting.type.label}
             caption={sighting.notes}
-            // source={getImage(sighting.image)}
-            // source={firebase.storage().ref(sighting.image).getDownloadURL()}
             source={sighting.image}
             key={index}
           />

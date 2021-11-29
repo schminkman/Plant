@@ -143,8 +143,8 @@ function AddSightingScreen({ navigation }) {
       .limitToLast(1)
       .on("value", (snapshot) => {
         snapshot.forEach((data) => {
-          console.log("data.val().id: ");
-          console.log(data.val().id);
+          // console.log("data.val().id: ");
+          // console.log(data.val().id);
           num = data.val().id + 1;
           setIdentifier(num);
         });

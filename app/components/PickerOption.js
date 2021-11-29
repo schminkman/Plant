@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import AppText from "./AppText";
 import TextCard from "./TextCard";
 
@@ -7,7 +7,8 @@ function PickerOption({ label, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
-        <TextCard caption={label} style={styles.options} />
+        {/* <TextCard caption={label} style={styles.options} /> */}
+        <Text style={styles.options}>{label}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -20,7 +21,8 @@ const styles = StyleSheet.create({
   },
   options: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 30,
+    padding: 20,
   },
   text: {
     padding: 20,

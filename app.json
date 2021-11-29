@@ -1,9 +1,9 @@
 {
   "expo": {
     "name": "Plant",
-    "slug": "Plant",
+    "slug": "SpeciesTracker",
     "version": "1.0.0",
-    "orientation": "portait",
+    "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
       "image": "./app/assets/splash.png",

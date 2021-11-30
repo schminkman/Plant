@@ -14,6 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref } from "firebase/storage";
 import "firebase/storage";
 import uuid from "react-native-uuid";
+import * as Location from "expo-location";
 
 import AppImagePicker from "../components/AppImagePicker";
 import AppText from "../components/AppText";
@@ -24,20 +25,15 @@ import colors from "../config/colors";
 import firebase from "../../firebase";
 import * as Firebase from "firebase";
 import routes from "../navigation/routes";
-import * as Location from "expo-location";
-import * as Media from "expo-media-library";
-
-// const storage = getStorage();
 
 const typeCats = [
   { label: "Animal", value: 1 },
   { label: "Plant", value: 2 },
 ];
 
-// const typeCats = ["Animal", "Plant"];
-
 function AddSightingScreen({ navigation }) {
   const [species, setSpecies] = useState("");
+  const [speciesLabel, setSpeciesLabel] = useState("");
   const [speciesType, setSpeciesType] = useState("");
   const [sightingNotes, setSightingNotes] = useState("");
   const [image, setImage] = useState(null);
@@ -56,7 +52,10 @@ function AddSightingScreen({ navigation }) {
       console.log("PERM NOT GRANTED!!");
       return;
     }
-    const { coords } = await Location.getCurrentPositionAsync();
+
+    // currently this is only working with last known position,
+    // I had this working with current position, but for some reason it has stopped working
+    const { coords } = await Location.getLastKnownPositionAsync();
     const latitude = coords.latitude;
     const longitude = coords.longitude;
     console.log("COORDS: ");
@@ -78,7 +77,9 @@ function AddSightingScreen({ navigation }) {
 
   // function which sets species to input text when we change the input text
   const handleOnChangeSpecies = (text) => {
+    // console.log(text.label);
     setSpecies(text);
+    setSpeciesLabel(text.label);
     const filename = new Date().toISOString(); // doing this here because I cannot get this to work in the image area
     setImageUUID(filename); // creating a unique filename based on current date and then setting the imageUUID to that string
   };
@@ -182,38 +183,47 @@ function AddSightingScreen({ navigation }) {
       });
   });
 
-  // const notCalledYet = true;
-  // function to get the list of supported species
-  // const getSupportedSpecies = async () => {
-  //   const supportedRef = firebase.database().ref("Species List");
-  //   supportedRef.on("value", (snapshot) => {
-  //     const supported = snapshot.val();
+  //// getting the list of supported species from the database, and setting the supportedSpecies state with that data ///////////
 
-  //     const supportedList = [];
+  const supportedList = []; // will hold the list of supported species
 
-  //     for (let id in supported) {
-  //       let species = supported[id].species.toString();
-  //       supportedList.push(species);
-  //     }
-  //     console.log(supportedList);
-  //     setSupportedSpecies(supportedList);
-  //     console.log("SUPPORTED SPECIES STATE: ");
-  //     console.log(supportedSpecies);
-  //     // notCalledYet = false;
-  //   });
-  // };
+  const supportedRef = firebase.database().ref("Species List"); // reference to supported species in database
 
-  // // calling the above function in a useEffect function
-  // useEffect(() => {
-  //   getSupportedSpecies();
-  // }, []);
+  // function to get and set the list of supported species
+  const getSupportedSpecies = () => {
+    supportedRef.on("value", (snapshot) => {
+      const supported = snapshot.val();
+
+      let i = 0;
+
+      for (let id in supported) {
+        let species = supported[id].species.toString();
+
+        let speciesVal = {
+          // of this form so that our AppPicker knows how to handle the list
+          label: species,
+          value: i,
+        };
+        supportedList.push(speciesVal);
+        i = i + 1;
+      }
+    });
+  };
+
+  // calling the above function in useEffect once
+  useEffect(() => {
+    getSupportedSpecies(); // will set the value of supportedList = to the correct values
+    setSupportedSpecies(supportedList); // set supportedSpecies based on supportedList
+  }, []);
+
+  ///////////////////// end handling getting and setting supported species list
 
   // add sighting to database
   const createSighting = () => {
     const sightingRef = firebase.database().ref("Sightings");
     const sighting = {
       // the object we will push
-      species,
+      species: speciesLabel,
       location: location,
       coarse: coarseLocation,
       type: speciesType,
@@ -235,19 +245,19 @@ function AddSightingScreen({ navigation }) {
   return (
     <View>
       <View style={styles.container}>
-        <AppTextInput
+        {/* <AppTextInput
           icon="badge-account-outline"
           placeholder="Species Name"
           onChangeText={(text) => handleOnChangeSpecies(text)}
           value={species}
-        />
-        {/* <AppPicker
+        /> */}
+        <AppPicker
           selectedItem={species}
-          onSelectItem={(species) => handleOnChangeSpecies(species)}
+          onSelectItem={(item) => handleOnChangeSpecies(item)}
           items={supportedSpecies}
           icon="badge-account-outline"
           placeholder="Species"
-        /> */}
+        />
         <AppPicker
           selectedItem={speciesType}
           onSelectItem={(item) => setSpeciesType(item)}

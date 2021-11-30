@@ -15,7 +15,6 @@ import { geocodeAsync, reverseGeocodeAsync } from "expo-location";
 
 function SightingList() {
   const [sightingList, setSightingList] = useState();
-  const [imageURL, setImageURL] = useState();
 
   useEffect(() => {
     const sightingRef = firebase.database().ref("Sightings");
@@ -27,20 +26,8 @@ function SightingList() {
         sightingList.push(sightings[id]);
       }
       setSightingList(sightingList);
-
-      //   console.log(sightingList[1]);
-      //   geo(sightingList[1].location);
     });
   }, []);
-
-  //   const geo = async (coords) => {
-  //     let location = await reverseGeocodeAsync(coords);
-  //     console.log("LOCATION: ");
-  //     let cityState = location[0].city + ", " + location[0].region;
-  //     // console.log(location[0].city + ", " + location[0].region);
-  //     console.log(cityState);
-  //     return cityState;
-  //   };
 
   return (
     <View style={styles.list}>

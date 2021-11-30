@@ -45,6 +45,7 @@ function AddSightingScreen({ navigation }) {
   const [identifier, setIdentifier] = useState(0);
   const [location, setLocation] = useState(null);
   const [coarseLocation, setCoarseLocation] = useState(null);
+  const [supportedSpecies, setSupportedSpecies] = useState(null);
 
   // function to get user's location permission and location
   // citation: https://codewithmosh.com/courses/955852/lectures/17711040
@@ -116,17 +117,6 @@ function AddSightingScreen({ navigation }) {
     if (!result.cancelled) {
       setImage(result.uri);
     }
-    // // console.log("image: " + image);
-    // const uri = result.uri.toString();
-    // console.log(uri);
-    // const asset = await Media.getAssetsAsync();
-    // const info = await Media.getAssetInfoAsync(asset);
-    // console.log("ASSET INFO: ");
-    // if (info) {
-    //   console.log(info.location);
-    // } else {
-    //   console.log("NO INFO");
-    // }
   };
 
   // https://www.youtube.com/watch?v=XxZO7151HYc&ab_channel=Voldy (this function was found on stack overflow, but I cannot find a link to that post... it is referenced in this video)
@@ -192,6 +182,32 @@ function AddSightingScreen({ navigation }) {
       });
   });
 
+  // const notCalledYet = true;
+  // function to get the list of supported species
+  // const getSupportedSpecies = async () => {
+  //   const supportedRef = firebase.database().ref("Species List");
+  //   supportedRef.on("value", (snapshot) => {
+  //     const supported = snapshot.val();
+
+  //     const supportedList = [];
+
+  //     for (let id in supported) {
+  //       let species = supported[id].species.toString();
+  //       supportedList.push(species);
+  //     }
+  //     console.log(supportedList);
+  //     setSupportedSpecies(supportedList);
+  //     console.log("SUPPORTED SPECIES STATE: ");
+  //     console.log(supportedSpecies);
+  //     // notCalledYet = false;
+  //   });
+  // };
+
+  // // calling the above function in a useEffect function
+  // useEffect(() => {
+  //   getSupportedSpecies();
+  // }, []);
+
   // add sighting to database
   const createSighting = () => {
     const sightingRef = firebase.database().ref("Sightings");
@@ -225,6 +241,13 @@ function AddSightingScreen({ navigation }) {
           onChangeText={(text) => handleOnChangeSpecies(text)}
           value={species}
         />
+        {/* <AppPicker
+          selectedItem={species}
+          onSelectItem={(species) => handleOnChangeSpecies(species)}
+          items={supportedSpecies}
+          icon="badge-account-outline"
+          placeholder="Species"
+        /> */}
         <AppPicker
           selectedItem={speciesType}
           onSelectItem={(item) => setSpeciesType(item)}

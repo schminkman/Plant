@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, Text, Image } from "react-native";
+import WebView from "react-native-webview";
 import firebase from "../../firebase";
 
 import colors from "../config/colors";
 import AppText from "./AppText";
 
-function LogCard({ title, location, source, type, caption }) {
+function AppCallout({ title, location, source, type, caption }) {
   const [imageURL, setImageURL] = useState();
 
   const getImage = async (source) => {
@@ -35,7 +36,9 @@ function LogCard({ title, location, source, type, caption }) {
         </View>
         <View style={styles.rightColumnContainer}>
           <AppText style={styles.subtitle}>{location}</AppText>
-          <Image style={styles.image} source={{ uri: imageURL }} />
+          <Text style={styles.imagecontainer}>
+            <WebView style={styles.image} source={{ uri: imageURL }} />
+          </Text>
         </View>
       </View>
       <AppText style={styles.caption}>{caption}</AppText>
@@ -46,10 +49,10 @@ function LogCard({ title, location, source, type, caption }) {
 const styles = StyleSheet.create({
   caption: {
     color: colors.steel,
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: "normal",
     paddingLeft: 20,
-    paddingBottom: 10,
+    // paddingBottom: 10,
   },
   card: {
     backgroundColor: colors.white,
@@ -58,11 +61,17 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   image: {
-    top: 20,
-    margin: 20,
+    // top: 20,
+    // margin: 20,
     borderRadius: 50,
-    height: 150,
-    width: 200,
+    height: 75,
+    width: 100,
+    // backgroundColor: "transparent",
+  },
+  imagecontainer: {
+    top: 20,
+    margin: 5,
+    right: 20,
   },
   leftColumnContainer: {
     flex: 1,
@@ -71,8 +80,9 @@ const styles = StyleSheet.create({
   rightColumnContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
     alignItems: "flex-end",
+    padding: 10,
   },
   rowContainer: {
     flexDirection: "row",
@@ -80,19 +90,20 @@ const styles = StyleSheet.create({
   },
   status: {
     color: colors.green,
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: "bold",
   },
   subtitle: {
     color: colors.primary,
-    fontSize: 15,
+    fontSize: 10,
     fontWeight: "bold",
+    left: 35,
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 0,
     textTransform: "uppercase",
   },
 });
 
-export default LogCard;
+export default AppCallout;

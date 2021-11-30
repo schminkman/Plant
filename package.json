@@ -36,7 +36,8 @@
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "~0.13.12",
     "uuidv4": "^6.2.12",
-    "expo-media-library": "~12.1.2"
+    "expo-media-library": "~12.1.2",
+    "react-native-webview": "11.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

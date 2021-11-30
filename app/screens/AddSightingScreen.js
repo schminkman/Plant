@@ -23,9 +23,8 @@ import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import firebase from "../../firebase";
 import * as Firebase from "firebase";
-import database from "../../firebase";
 import routes from "../navigation/routes";
-import { getProviderStatusAsync } from "expo-location";
+import * as Location from "expo-location";
 
 // const storage = getStorage();
 
@@ -42,7 +41,59 @@ function AddSightingScreen({ navigation }) {
   const [sightingNotes, setSightingNotes] = useState("");
   const [image, setImage] = useState(null);
   const [imageUUID, setImageUUID] = useState("");
-  const [identifier, setIdentifier] = useState("");
+  const [identifier, setIdentifier] = useState(0);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  // function to get user's location permission and location
+  // citation: https://codewithmosh.com/courses/955852/lectures/17711040
+  const getLocation = async () => {
+    const { granted } = await Location.requestForegroundPermissionsAsync();
+    // console.log("granted: " + granted);
+    if (!granted) {
+      console.log("PERM NOT GRANTED!!");
+      return;
+    }
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync();
+    console.log("COORDS: ");
+    console.log(coords);
+    // const {
+    //   coords: { latitude, longitude }, // destructuring the object returned by getLastKnownPosition
+    // } = await Location.getCurrentPositionAsync();
+    // console.log("Coordinates: " + latitude + " " + longitude);
+    setLocation({ latitude, longitude });
+    console.log("Coordinates: " + location);
+  };
+
+  // calling getLocation() in useEffect function, calling only once
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  // testing
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       return;
+  //     }
+
+  //     let location = await Location.getLastKnownPositionAsync({});
+  //     setLocation(location);
+  //   })();
+  // }, []);
+
+  // let text = "Waiting...";
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // } else if (location) {
+  //   text = JSON.stringify(location);
+  // }
+
+  // console.log(text);
 
   // function which sets species to input text when we change the input text
   const handleOnChangeSpecies = (text) => {
@@ -80,7 +131,7 @@ function AddSightingScreen({ navigation }) {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -111,7 +162,7 @@ function AddSightingScreen({ navigation }) {
     snapshot.on(
       Firebase.storage.TaskEvent.STATE_CHANGED,
       () => {
-        console.log("Here");
+        // console.log("Here");
       },
       (error) => {
         console.log(error);
@@ -157,6 +208,7 @@ function AddSightingScreen({ navigation }) {
     const sighting = {
       // the object we will push
       species,
+      location: location,
       type: speciesType,
       image: imageUUID,
       notes: sightingNotes,

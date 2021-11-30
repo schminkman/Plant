@@ -15,12 +15,24 @@ const Tab = createBottomTabNavigator();
 const AdminNavigator = () => (
   <Tab.Navigator
     initialRouteName="A_Info"
-    tabBarOptions={{
-      activeBackgroundColor: colors.tertiary,
-      activeTintColor: "white",
-      inactiveBackgroundColor: "#eee",
-      inactiveTintColor: "black",
+    screenoptions={{
+      tabBarActiveTintColor: "white",
+      tabBarInactiveTintColor: "black",
+      tabBarActiveBackgroundColor: "#F72169",
+      tabBarInactiveBackgroundColor: "#eee",
+      tabBarStyle: [
+        {
+          display: "flex",
+        },
+        null,
+      ],
     }}
+    // tabBarOptions={{
+    //   activeBackgroundColor: colors.tertiary,
+    //   activeTintColor: "white",
+    //   inactiveBackgroundColor: "#eee",
+    //   inactiveTintColor: "black",
+    // }}
   >
     {/* <Tab.Screen name="Welcome" component={WelcomeScreen} /> */}
     <Tab.Screen

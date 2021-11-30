@@ -11,7 +11,6 @@ import colors from "../config/colors";
 function MapScreen(props) {
   return (
     <SafeAreaView style={styles.background}>
-      <AppText style={styles.header}>Interactive Map</AppText>
       <MapView
         style={styles.map}
         initialRegion={{

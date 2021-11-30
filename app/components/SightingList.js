@@ -35,7 +35,7 @@ function SightingList() {
         sightingList.map((sighting, index) => (
           <LogCard
             title={sighting.species}
-            location="Location"
+            location="location"
             type={sighting.type.label}
             caption={sighting.notes}
             source={sighting.image}

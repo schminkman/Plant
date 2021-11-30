@@ -52,7 +52,7 @@ function A_SightingList({ navigation }) {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: colors.aluminum,
+    backgroundColor: colors.grey,
     padding: 20,
     paddingTop: 40,
     flex: 1,

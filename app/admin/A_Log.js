@@ -32,7 +32,7 @@ function A_Log() {
         sightingList.map((sighting, index) => (
           <A_LogCard
             title={sighting.species}
-            location="Location"
+            location={sighting.coarse}
             type={sighting.type.label}
             caption={sighting.notes}
             source={sighting.image}

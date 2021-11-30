@@ -9,6 +9,7 @@ import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 import AppText from "./AppText";
 import { createIconSetFromFontello } from "react-native-vector-icons";
+import { geocodeAsync, reverseGeocodeAsync } from "expo-location";
 
 // sources used to aid in the creation of this component: https://www.youtube.com/watch?v=v0TKYSkZ2tI&ab_channel=DailyWebCoding
 
@@ -26,8 +27,20 @@ function SightingList() {
         sightingList.push(sightings[id]);
       }
       setSightingList(sightingList);
+
+      //   console.log(sightingList[1]);
+      //   geo(sightingList[1].location);
     });
   }, []);
+
+  //   const geo = async (coords) => {
+  //     let location = await reverseGeocodeAsync(coords);
+  //     console.log("LOCATION: ");
+  //     let cityState = location[0].city + ", " + location[0].region;
+  //     // console.log(location[0].city + ", " + location[0].region);
+  //     console.log(cityState);
+  //     return cityState;
+  //   };
 
   return (
     <View style={styles.list}>
@@ -35,7 +48,8 @@ function SightingList() {
         sightingList.map((sighting, index) => (
           <LogCard
             title={sighting.species}
-            location="location"
+            location={sighting.coarse}
+            // location="Location"
             type={sighting.type.label}
             caption={sighting.notes}
             source={sighting.image}

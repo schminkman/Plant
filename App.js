@@ -29,10 +29,6 @@ export default function App() {
     <NavigationContainer>
       <AuthNavigator />
     </NavigationContainer>
-    // <A_InfoScreen />
-    // <NavigationContainer>
-    //   <AdminNavigator />
-    // </NavigationContainer>
   );
 }
 

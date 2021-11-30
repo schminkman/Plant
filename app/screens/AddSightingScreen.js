@@ -25,6 +25,7 @@ import firebase from "../../firebase";
 import * as Firebase from "firebase";
 import routes from "../navigation/routes";
 import * as Location from "expo-location";
+import * as Media from "expo-media-library";
 
 // const storage = getStorage();
 
@@ -43,7 +44,7 @@ function AddSightingScreen({ navigation }) {
   const [imageUUID, setImageUUID] = useState("");
   const [identifier, setIdentifier] = useState(0);
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [coarseLocation, setCoarseLocation] = useState(null);
 
   // function to get user's location permission and location
   // citation: https://codewithmosh.com/courses/955852/lectures/17711040
@@ -54,46 +55,25 @@ function AddSightingScreen({ navigation }) {
       console.log("PERM NOT GRANTED!!");
       return;
     }
-    const {
-      coords: { latitude, longitude },
-    } = await Location.getCurrentPositionAsync();
+    const { coords } = await Location.getCurrentPositionAsync();
+    const latitude = coords.latitude;
+    const longitude = coords.longitude;
     console.log("COORDS: ");
-    console.log(coords);
-    // const {
-    //   coords: { latitude, longitude }, // destructuring the object returned by getLastKnownPosition
-    // } = await Location.getCurrentPositionAsync();
-    // console.log("Coordinates: " + latitude + " " + longitude);
+    console.log(latitude);
+    console.log(longitude);
     setLocation({ latitude, longitude });
-    console.log("Coordinates: " + location);
+
+    // setting coarse location using reverseGeocodeAsync
+    let coarseInfo = await Location.reverseGeocodeAsync(coords);
+    let cityState = coarseInfo[0].city + ", " + coarseInfo[0].region;
+    setCoarseLocation(cityState);
+    // console.log("Coordinates: " + location);
   };
 
   // calling getLocation() in useEffect function, calling only once
   useEffect(() => {
     getLocation();
   }, []);
-
-  // testing
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     }
-
-  //     let location = await Location.getLastKnownPositionAsync({});
-  //     setLocation(location);
-  //   })();
-  // }, []);
-
-  // let text = "Waiting...";
-  // if (errorMsg) {
-  //   text = errorMsg;
-  // } else if (location) {
-  //   text = JSON.stringify(location);
-  // }
-
-  // console.log(text);
 
   // function which sets species to input text when we change the input text
   const handleOnChangeSpecies = (text) => {
@@ -131,12 +111,22 @@ function AddSightingScreen({ navigation }) {
       quality: 1,
     });
 
-    // console.log(result);
+    // console.log(result.uri);
 
     if (!result.cancelled) {
       setImage(result.uri);
     }
-    // console.log("image: " + image);
+    // // console.log("image: " + image);
+    // const uri = result.uri.toString();
+    // console.log(uri);
+    // const asset = await Media.getAssetsAsync();
+    // const info = await Media.getAssetInfoAsync(asset);
+    // console.log("ASSET INFO: ");
+    // if (info) {
+    //   console.log(info.location);
+    // } else {
+    //   console.log("NO INFO");
+    // }
   };
 
   // https://www.youtube.com/watch?v=XxZO7151HYc&ab_channel=Voldy (this function was found on stack overflow, but I cannot find a link to that post... it is referenced in this video)
@@ -209,6 +199,7 @@ function AddSightingScreen({ navigation }) {
       // the object we will push
       species,
       location: location,
+      coarse: coarseLocation,
       type: speciesType,
       image: imageUUID,
       notes: sightingNotes,

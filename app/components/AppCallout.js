@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     left: 35,
   },
   title: {
-    fontSize: 15,
+    fontSize: 13,
     marginBottom: 0,
     textTransform: "uppercase",
   },

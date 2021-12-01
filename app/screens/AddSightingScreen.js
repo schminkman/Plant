@@ -7,16 +7,13 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Navigation, NavigationContainer } from "@react-navigation/native";
 import { IconButton, Colors } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
-import { getStorage, ref } from "firebase/storage";
 import "firebase/storage";
-import uuid from "react-native-uuid";
 import * as Location from "expo-location";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
-import AppImagePicker from "../components/AppImagePicker";
 import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
 import AppPicker from "../components/AppPicker";
@@ -42,6 +39,7 @@ function AddSightingScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [coarseLocation, setCoarseLocation] = useState(null);
   const [supportedSpecies, setSupportedSpecies] = useState(null);
+  const [valid, setValid] = useState(false);
 
   // function to get user's location permission and location
   // citation: https://codewithmosh.com/courses/955852/lectures/17711040
@@ -58,9 +56,9 @@ function AddSightingScreen({ navigation }) {
     const { coords } = await Location.getLastKnownPositionAsync();
     const latitude = coords.latitude;
     const longitude = coords.longitude;
-    console.log("COORDS: ");
-    console.log(latitude);
-    console.log(longitude);
+    // console.log("COORDS: "); // for debugging
+    // console.log(latitude);
+    // console.log(longitude);
     setLocation({ latitude, longitude });
 
     // setting coarse location using reverseGeocodeAsync
@@ -120,7 +118,8 @@ function AddSightingScreen({ navigation }) {
     }
   };
 
-  // https://www.youtube.com/watch?v=XxZO7151HYc&ab_channel=Voldy (this function was found on stack overflow, but I cannot find a link to that post... it is referenced in this video)
+  // https://www.youtube.com/watch?v=XxZO7151HYc&ab_channel=Voldy
+  // (this function was found on stack overflow, but I cannot find a link to that post... it is referenced in this video)
 
   const uploadImage = async () => {
     const blob = await new Promise((resolve, reject) => {
@@ -161,12 +160,6 @@ function AddSightingScreen({ navigation }) {
 
   ////////////////////////////////////////////////////////////////////////// end image handling
 
-  // had to put getID() call inside of useEffect so that we could setState for identifier
-  let num = 0;
-  useEffect(() => {
-    getID();
-  });
-
   // get the next sighting's uniquie identifier
   const getID = (async = () => {
     const sightingsRef = firebase.database().ref("Sightings");
@@ -182,6 +175,12 @@ function AddSightingScreen({ navigation }) {
         });
       });
   });
+
+  // had to put getID() call inside of useEffect so that we could setState for identifier
+  let num = 0;
+  useEffect(() => {
+    getID();
+  }, []);
 
   //// getting the list of supported species from the database, and setting the supportedSpecies state with that data ///////////
 
@@ -237,9 +236,27 @@ function AddSightingScreen({ navigation }) {
 
   // handle uploadImage(), createSighting(), go back to logbook
   const addToLogbook = () => {
-    uploadImage();
-    createSighting();
-    navigation.navigate(routes.LOGBOOK);
+    if (!valid) {
+      checkFields();
+    } else {
+      uploadImage();
+      createSighting();
+      navigation.navigate(routes.LOGBOOK);
+    }
+  };
+
+  // handle checking to see if each field is populated (except for the notes field)
+  const checkFields = () => {
+    if (species === "" || speciesType === "" || image === null) {
+      alert("Error: All fields except for 'notes' are required", [
+        { text: "" },
+      ]);
+    } else {
+      setValid(true);
+      uploadImage();
+      createSighting();
+      navigation.navigate(routes.LOGBOOK);
+    }
   };
 
   return (
@@ -292,7 +309,11 @@ function AddSightingScreen({ navigation }) {
         />
       </View>
       <View style={styles.container}>
-        <AppButton title="Add to Logbook!" onPress={addToLogbook} />
+        <AppButton
+          title="Add to Logbook!"
+          color="tertiary"
+          onPress={addToLogbook}
+        />
       </View>
     </View>
   );

@@ -48,6 +48,12 @@ function MapScreen(props) {
         supportedList.push(speciesVal);
         i = i + 1;
       }
+      let noFilter = {
+        label: "No Filter",
+        value: i + 1,
+      };
+
+      supportedList.push(noFilter);
     });
   };
 
@@ -75,10 +81,31 @@ function MapScreen(props) {
       // setSpecies(filter);
     });
   };
+
+  // get original sighting list if "none" selected as filter
+  const getSpeciesNoFilter = () => {
+    const sightingRef = firebase.database().ref("Sightings");
+    sightingRef.on("value", (snapshot) => {
+      const sightings = snapshot.val();
+
+      const sightingList = [];
+      for (let id in sightings) {
+        sightingList.push(sightings[id]);
+      }
+      setSightingList(sightingList);
+    });
+  };
+
   // handle changing the filter species
   const handleChangeSpecies = (item) => {
-    setSpecies(item.label);
-    getSpeciesFilter(item.label);
+    if (item.label === "No Filter") {
+      setSpecies(item.label);
+      getSpeciesNoFilter();
+    } else {
+      setSpecies(item.label);
+      getSpeciesFilter(item.label);
+    }
+
     // console.log(species);
   };
 

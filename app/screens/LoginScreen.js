@@ -9,7 +9,6 @@ import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
-// import { Admins } from "../admin/A_WhiteList";
 import firebase from "../../firebase";
 import routes from "../navigation/routes";
 import AppText from "../components/AppText";

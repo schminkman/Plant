@@ -17,34 +17,41 @@ import AppText from "../components/AppText";
 // It should be noted here that I learned about Formik and Yup via https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
 // but I put this together myself
 
+// validation schema for Yup / Formik
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(5).label("Password"),
 });
 
 function LoginScreen({ navigation }) {
+  const [adminList, setAdminList] = useState("");
+  const [isLoading, setLoading] = useState(true);
+
   const adminRef = firebase.database().ref("Admins"); // reference to the admin list in firebase (the whitelist)
 
-  const getAdminList = () => {
-    const list = [];
+  const getAdminList = async () => {
+    const list = []; // to temporarily hold the admin list
     adminRef.on("value", (snapshot) => {
       snapshot.forEach((data) => {
         list.push(data.val().email);
       });
     });
-    return list;
+    setAdminList(list); // set the adminlist = list
+    setLoading(false); // set loading to false
   };
 
+  // check to see if the current user is an admin, checking user's email address against the admin list in firebase
   const checkAdminStatus = (user) => {
-    const list = getAdminList();
-    for (let i = 0; i < list.length; i++) {
-      if (list[i] === user.email) {
+    for (let i = 0; i < adminList.length; i++) {
+      if (adminList[i] === user.email) {
         return true;
       }
     }
   };
 
+  // essentially a listener, waiting on the user to log in
   useEffect(() => {
+    // when the user logs in, this is called
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         const isAdmin = checkAdminStatus(user);
@@ -61,6 +68,7 @@ function LoginScreen({ navigation }) {
     return unsubscribe;
   }, []);
 
+  // handle logging in with given credentials, using firebase auth
   const handleLogin = (values) => {
     let email = values.email;
     let password = values.password;
@@ -73,34 +81,49 @@ function LoginScreen({ navigation }) {
       .catch((error) => alert(error.message));
   };
 
-  return (
-    <View style={styles.container}>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => handleLogin(values)}
-        validationSchema={validationSchema}
-      >
-        {({ handleChange, handleSubmit, errors }) => (
-          <>
-            <AppTextInput
-              placeholder="Email"
-              // value={email}
-              onChangeText={handleChange("email")}
-              style={styles.input}
-            />
-            <AppTextInput
-              placeholder="Password"
-              // value={password}
-              onChangeText={handleChange("password")}
-              style={styles.input}
-              secureTextEntry // to hide the password as it's typed
-            />
-            <AppButton title="Log In" color="tertiary" onPress={handleSubmit} />
-          </>
-        )}
-      </Formik>
-    </View>
-  );
+  // if we don't yet have the adminlist (isloading is set to false after we get the list)
+  if (isLoading) {
+    getAdminList();
+
+    return (
+      <View>
+        <AppText>Loading...</AppText>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          onSubmit={(values) => handleLogin(values)}
+          validationSchema={validationSchema}
+        >
+          {({ handleChange, handleSubmit, errors }) => (
+            <>
+              <AppTextInput
+                placeholder="Email"
+                // value={email}
+                onChangeText={handleChange("email")}
+                style={styles.input}
+              />
+              <AppTextInput
+                placeholder="Password"
+                // value={password}
+                onChangeText={handleChange("password")}
+                style={styles.input}
+                secureTextEntry // to hide the password as it's typed
+              />
+              <AppButton
+                title="Log In"
+                color="tertiary"
+                onPress={handleSubmit}
+              />
+            </>
+          )}
+        </Formik>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

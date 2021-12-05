@@ -15,8 +15,6 @@ function A_AddAdmin(props) {
   const [adminList, setAdminList] = useState("");
   const [userList, setUserList] = useState(null);
   const [identifier, setIdentifier] = useState(0);
-  const [uid, setUid] = useState(null);
-  //   const [success, setSuccess] = useState(false);
 
   // create reference for the current user              /////               // useful alternative for login navigation ?
   //   const user = firebase.auth().currentUser.uid;
@@ -30,10 +28,6 @@ function A_AddAdmin(props) {
     const list = [];
     userRef.on("value", (snapshot) => {
       snapshot.forEach((data) => {
-        // console.log("email: " + email);
-        // console.log("data.val().email: " + data.val().email);
-        // console.log("data.val for each: ");
-        // console.log(data.val());
         list.push(data.val());
       });
     });
@@ -43,8 +37,6 @@ function A_AddAdmin(props) {
   // call getUsers, to get the list of users when the page is opened
   useEffect(() => {
     getUsers();
-    // console.log("users list: ");
-    // console.log(userList);
   }, []);
 
   // given a user's email, get that user's uid from firebase users list
@@ -53,7 +45,6 @@ function A_AddAdmin(props) {
       let user = userList[i].email;
       let id = userList[i].uid;
       if (email === user) {
-        setUid(id);
         return id;
       }
     }
@@ -63,10 +54,10 @@ function A_AddAdmin(props) {
   const checkID = (userid) => {
     for (let i = 0; i < userList.length; i++) {
       let id = userList[i].uid;
-      console.log(" looking for: " + userid);
-      console.log("found: " + userList[i].uid);
+      //   console.log(" looking for: " + userid);
+      //   console.log("found: " + userList[i].uid);
       if (userid === id) {
-        console.log("SUCCESS HERE");
+        // console.log("SUCCESS HERE");
         return true;
       }
     }
@@ -89,12 +80,17 @@ function A_AddAdmin(props) {
   }, []);
 
   // add species to species list
-  const createAdmin = () => {
+  const createAdmin = (tempID) => {
+    let uid = tempID;
+    console.log("tempID here: " + tempID);
     const newAdmin = {
       id: identifier,
       email: admin,
       uid: uid,
     };
+
+    console.log("New Admin to be added: ");
+    console.log(newAdmin);
 
     adminRef.push(newAdmin); // push to database
   };
@@ -118,7 +114,7 @@ function A_AddAdmin(props) {
     console.log("tempID: " + tempID);
     let success = checkID(tempID);
     if (success) {
-      createAdmin();
+      createAdmin(tempID);
     } else {
       alert(
         "Error: There are currently no users registered with that email address!",

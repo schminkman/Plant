@@ -28,6 +28,8 @@ const typeCats = [
   { label: "Plant", value: 2 },
 ];
 
+const sightingRef = firebase.database().ref("Sightings"); // sightings ref
+
 function AddSightingScreen({ navigation }) {
   const [species, setSpecies] = useState("");
   const [speciesLabel, setSpeciesLabel] = useState("");
@@ -145,6 +147,7 @@ function AddSightingScreen({ navigation }) {
         // console.log("Here");
       },
       (error) => {
+        console.log("HERE: ");
         console.log(error);
         blob.close();
         return;
@@ -161,9 +164,8 @@ function AddSightingScreen({ navigation }) {
   ////////////////////////////////////////////////////////////////////////// end image handling
 
   // get the next sighting's uniquie identifier
-  const getID = (async = () => {
-    const sightingsRef = firebase.database().ref("Sightings");
-    sightingsRef
+  const getID = async () => {
+    sightingRef
       .orderByValue()
       .limitToLast(1)
       .on("value", (snapshot) => {
@@ -172,9 +174,10 @@ function AddSightingScreen({ navigation }) {
           // console.log(data.val().id);
           num = data.val().id + 1;
           setIdentifier(num);
+          console.log(identifier);
         });
       });
-  });
+  };
 
   // had to put getID() call inside of useEffect so that we could setState for identifier
   let num = 0;
@@ -217,9 +220,11 @@ function AddSightingScreen({ navigation }) {
 
   ///////////////////// end handling getting and setting supported species list
 
+  //
   // add sighting to database
   const createSighting = () => {
-    const sightingRef = firebase.database().ref("Sightings");
+    const sightingRef = firebase.database().ref("Sightings"); // sightings ref
+    console.log(identifier);
     const sighting = {
       // the object we will push
       species: speciesLabel,

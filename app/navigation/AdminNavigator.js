@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import A_SpeciesList from "../admin/A_SpeciesList";
 import A_InfoScreen from "../admin/A_InfoScreen";
 import A_SightingList from "../admin/A_SightingList";
+import A_AddAdmin from "../admin/A_AddAdmin";
 
 import colors from "../config/colors";
 
@@ -18,7 +19,7 @@ const AdminNavigator = () => (
     screenoptions={{
       tabBarActiveTintColor: "white",
       tabBarInactiveTintColor: "black",
-      tabBarActiveBackgroundColor: "#F72169",
+      tabBarActiveBackgroundColor: colors.tertiary,
       tabBarInactiveBackgroundColor: "#eee",
       tabBarStyle: [
         {
@@ -27,14 +28,7 @@ const AdminNavigator = () => (
         null,
       ],
     }}
-    // tabBarOptions={{
-    //   activeBackgroundColor: colors.tertiary,
-    //   activeTintColor: "white",
-    //   inactiveBackgroundColor: "#eee",
-    //   inactiveTintColor: "black",
-    // }}
   >
-    {/* <Tab.Screen name="Welcome" component={WelcomeScreen} /> */}
     <Tab.Screen
       name="A_Info"
       component={A_InfoScreen}
@@ -71,6 +65,20 @@ const AdminNavigator = () => (
         tabBarIcon: ({ size, color }) => (
           <MaterialCommunityIcons
             name="clipboard-list-outline"
+            size={size}
+            color={color}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="A_AddAdmin"
+      component={A_AddAdmin}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ size, color }) => (
+          <MaterialCommunityIcons
+            name="account-plus-outline"
             size={size}
             color={color}
           />

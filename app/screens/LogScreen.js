@@ -6,6 +6,7 @@ import {
   ScrollView,
   Button,
   RefreshControl,
+  // LogBox,
 } from "react-native";
 
 import colors from "../config/colors";
@@ -15,6 +16,7 @@ import LogCard from "../components/LogCard";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 import SightingList from "../components/SightingList";
+// LogBox.ignoreAllLogs();
 
 // scroll to refresh from docs - https://reactnative.dev/docs/refreshcontrol
 

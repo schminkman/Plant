@@ -9,7 +9,8 @@ import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
-import { Admins } from "../admin/A_WhiteList";
+// import { Admins } from "../admin/A_WhiteList";
+import firebase from "../../firebase";
 import routes from "../navigation/routes";
 import AppText from "../components/AppText";
 
@@ -22,14 +23,33 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+  const adminRef = firebase.database().ref("Admins"); // reference to the admin list in firebase (the whitelist)
+
+  const getAdminList = () => {
+    const list = [];
+    adminRef.on("value", (snapshot) => {
+      snapshot.forEach((data) => {
+        list.push(data.val().email);
+      });
+    });
+    return list;
+  };
+
+  const checkAdminStatus = (user) => {
+    const list = getAdminList();
+    for (let i = 0; i < list.length; i++) {
+      if (list[i] === user.email) {
+        return true;
+      }
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        if (Admins.includes(user.uid)) {
-          // if user's uid is contained in admin whitelist
+        const isAdmin = checkAdminStatus(user);
+        if (isAdmin) {
+          // if user's uid is contained in admin list
           navigation.replace(routes.A_HOME); // then take to admin pages via "A_Home" (AdminNavigator)
         } else {
           navigation.replace(routes.HOME); // take to typical pages via "Home" (AppNavigator)

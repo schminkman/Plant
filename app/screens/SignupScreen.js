@@ -9,6 +9,7 @@ import colors from "../config/colors";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
+import firebase from "../../firebase";
 import { auth } from "../../firebase";
 import routes from "../navigation/routes";
 
@@ -21,9 +22,6 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignupScreen({ navigation }) {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -41,8 +39,19 @@ function SignupScreen({ navigation }) {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        addToUsersList(email, user.uid); // call addToUsersList with email and user's uid
       })
       .catch((error) => alert(error.message));
+  };
+
+  // function to add a user (email and uid) to the users list in the database
+  const addToUsersList = (email, uid) => {
+    const user = {
+      email: email,
+      uid: uid,
+    };
+    const userRef = firebase.database().ref("Users");
+    userRef.push(user);
   };
 
   return (

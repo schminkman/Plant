@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  FlatList,
-  Button,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Button, Image, StyleSheet, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import firebase from "../../firebase";
 import AppButton from "../components/AppButton";
@@ -44,11 +34,27 @@ function A_LogCard({ title, location, source, type, caption, ID }) {
         // console.log(data.val().id);
         if (data.val().id === ID) {
           //   console.log(data.key);
-          key = data.key;
+          let key = data.key;
           sightingsRef.child(key).remove();
         }
       });
     });
+  };
+
+  const showAlert = () => {
+    Alert.alert("Wait!", "Are you sure you want to delete this sighting?", [
+      {
+        text: "No",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "Yes!", onPress: () => handleDelete() },
+    ]);
+  };
+
+  // handle asking the admin if they are sure they wish to delete a sighting
+  const handleDeleteSpecies = () => {
+    showAlert();
   };
 
   const handleDelete = () => {
@@ -66,7 +72,7 @@ function A_LogCard({ title, location, source, type, caption, ID }) {
               title="Delete"
               color={colors.red}
               style={styles.button}
-              onPress={handleDelete}
+              onPress={handleDeleteSpecies}
             />
           </View>
         </View>

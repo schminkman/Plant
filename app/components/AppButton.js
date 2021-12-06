@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 
-import AppText from "./AppText";
 import colors from "../config/colors";
 
+// custom button component, built with the help of https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
+// but then customized for my own use
 function AppButton({ title, onPress, width = "80%", color = "primary" }) {
   return (
     <TouchableOpacity

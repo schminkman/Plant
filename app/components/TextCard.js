@@ -1,9 +1,11 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
-import AppText from "./AppText";
 import colors from "../config/colors";
 
+import AppText from "./AppText";
+
+// custom text card component, which displays an AppText child as well as a button (touchable opacity)
 function TextCard({ caption, style, button, action }) {
   return (
     <View style={styles.card}>
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   container: {
-    // padding: 20,
     flexDirection: "row",
     padding: 12,
     alignItems: "center",

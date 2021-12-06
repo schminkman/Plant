@@ -1,23 +1,22 @@
 import React from "react";
 import { useState } from "react";
 import {
-  TextInput,
   View,
   StyleSheet,
-  Platform,
   TouchableOpacity,
-  TouchableHighlight,
-  TouchableOpacityBase,
   Modal,
   FlatList,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import AppText from "./AppText";
 import colors from "../config/colors";
+
 import AppButton from "./AppButton";
+import AppText from "./AppText";
 import PickerOption from "./PickerOption";
 
+// custom picker component built with the help of https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
+// and then customized by me for use in my app
 function AppPicker({
   icon,
   items,
@@ -26,7 +25,7 @@ function AppPicker({
   selectedItem,
   color = "grey",
 }) {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); // state to handle the visibility of the modal
 
   return (
     <React.Fragment>

@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
+// custom text input component built with the help of https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
 function AppTextInput({ icon, ...otherProps }) {
   return (
     <View style={styles.container}>

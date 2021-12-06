@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, Text, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import firebase from "../../firebase";
 
 import colors from "../config/colors";
+
 import AppText from "./AppText";
 
+// custom card component, originally built with the help of https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
+// but then customized in order to handle my sighting objects
 function LogCard({ title, location, source, type, caption }) {
-  const [imageURL, setImageURL] = useState();
+  const [imageURL, setImageURL] = useState(); // state to hold the image URL
 
+  // function which gets the image from database cloud storage
   const getImage = async (source) => {
     let imageRef = firebase.storage().ref(source);
     imageRef
@@ -16,12 +20,14 @@ function LogCard({ title, location, source, type, caption }) {
         setImageURL(url);
       })
       .catch((e) => console.log("error fetching image download URL"));
-    // console.log(imageURL);
     return imageURL;
   };
 
+  // calling getImage here 1/2
   getImage(source);
 
+  // and here, in a useEffect 2/2
+  // Calling in both locations seemed to be necessary for the best results
   useEffect(() => {
     getImage(source);
   }, []);

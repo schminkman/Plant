@@ -1,28 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Image,
-  Text,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Button,
-  TouchableHighlight,
-} from "react-native";
+import { Image, Platform, StyleSheet, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { IconButton, Colors } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { IconButton } from "react-native-paper";
+
+import colors from "../config/colors";
 
 import AppText from "./AppText";
-import colors from "../config/colors";
-import AppButton from "./AppButton";
 
+// component which allows the user to select an image from the device library
 // using the recommended code at https://docs.expo.dev/versions/latest/sdk/imagepicker/
-
 function AppImagePicker(props) {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null); // state to hold the image URI
 
+  // requesting permission from the user to access the media library
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -35,6 +26,7 @@ function AppImagePicker(props) {
     })();
   }, []);
 
+  // launching the image library and allowing the user to pick an image
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -46,7 +38,7 @@ function AppImagePicker(props) {
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      setImage(result.uri); // setting the image URI based on the selected image
     }
   };
 
@@ -78,17 +70,12 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
     alignItems: "center",
-    // justifyContent: "center",
-  },
-  icons: {
-    alignSelf: "flex-start",
   },
   text: {
     paddingLeft: 10,
     fontWeight: "normal",
     fontSize: 18,
     color: colors.black,
-    // alignSelf: "flex-end",
     flex: 1,
   },
 });

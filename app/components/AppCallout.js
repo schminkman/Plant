@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, Text, Image } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import WebView from "react-native-webview";
-import firebase from "../../firebase";
 
 import colors from "../config/colors";
+import firebase from "../../firebase";
+
 import AppText from "./AppText";
 
+// custom map marker callout component, which takes all of the necessary props to handle displaying a given sighting object
 function AppCallout({ title, location, source, type, caption }) {
-  const [imageURL, setImageURL] = useState();
+  const [imageURL, setImageURL] = useState(); // state to hold the URL of the image
 
+  // function to get the image URL
   const getImage = async (source) => {
     let imageRef = firebase.storage().ref(source);
     imageRef
@@ -17,12 +20,14 @@ function AppCallout({ title, location, source, type, caption }) {
         setImageURL(url);
       })
       .catch((e) => console.log("error fetching image download URL"));
-    // console.log(imageURL);
     return imageURL;
   };
 
+  // calling getImage here 1/2
   getImage(source);
 
+  // and here, in a useEffect 2/2
+  // for some reason, this helped make sure the images load, not sure why it needed to be called in both places
   useEffect(() => {
     getImage(source);
   }, []);
@@ -52,7 +57,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "normal",
     paddingLeft: 20,
-    // paddingBottom: 10,
   },
   card: {
     backgroundColor: colors.white,
@@ -61,12 +65,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   image: {
-    // top: 20,
-    // margin: 20,
     borderRadius: 50,
     height: 75,
     width: 100,
-    // backgroundColor: "transparent",
   },
   imagecontainer: {
     top: 20,

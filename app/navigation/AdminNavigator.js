@@ -2,17 +2,18 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import colors from "../config/colors";
+
 import A_SpeciesList from "../admin/A_SpeciesList";
 import A_InfoScreen from "../admin/A_InfoScreen";
 import A_SightingList from "../admin/A_SightingList";
 import A_AddAdmin from "../admin/A_AddAdmin";
 
-import colors from "../config/colors";
-
-import LogNavigator from "./LogNavigator";
-
 // Handle navigation with tabs, from react-navigation
 const Tab = createBottomTabNavigator();
+
+// this navigation component handles navigation for admins via tab navigation,
+// this is called when the user logs in as an admin
 const AdminNavigator = () => (
   <Tab.Navigator
     initialRouteName="A_Info"

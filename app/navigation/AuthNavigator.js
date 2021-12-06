@@ -7,8 +7,11 @@ import SignupScreen from "../screens/SignupScreen.js";
 import AppNavigator from "./AppNavigator";
 import AdminNavigator from "./AdminNavigator";
 
+// Handle navigation with stack, from react-navigation
 const Stack = createStackNavigator();
 
+// this navigation component uses a stack navigator to handle the auth navigation,
+// the log in / sign up / welcome screens
 const AuthNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen

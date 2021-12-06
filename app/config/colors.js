@@ -1,3 +1,4 @@
+// config file which contains all of the colors used by the application, so that we don't have to type in the hex code for each use
 export default {
   primary: "#17A589",
   secondary: "#2E86C1",

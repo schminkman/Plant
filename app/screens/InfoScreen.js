@@ -1,15 +1,18 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { auth } from "../../firebase";
+import colors from "../config/colors";
+import routes from "../navigation/routes";
 
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
-import routes from "../navigation/routes";
 
-import colors from "../config/colors";
-
+// screen component which displays the current user's email address
+// and provides a logout button, which will log the user out
 function InfoScreen({ navigation }) {
+  // function to handle log out and navigate back to the welcome screen
   const handleLogOut = () => {
     auth.signOut().then(() => {
       navigation.replace(routes.WELCOME);

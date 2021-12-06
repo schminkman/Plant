@@ -5,12 +5,13 @@ import { View, StyleSheet } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import colors from "../config/colors";
-import AppTextInput from "../components/AppTextInput";
-import AppButton from "../components/AppButton";
 import { auth } from "../../firebase";
+import colors from "../config/colors";
 import firebase from "../../firebase";
 import routes from "../navigation/routes";
+
+import AppButton from "../components/AppButton";
+import AppTextInput from "../components/AppTextInput";
 import AppText from "../components/AppText";
 
 // It should be noted here that I learned about Formik and Yup via https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
@@ -22,12 +23,14 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(5).label("Password"),
 });
 
+// screen component which serves as the login screen (navigated to by selecting log in from the welcome screen)
 function LoginScreen({ navigation }) {
-  const [adminList, setAdminList] = useState("");
-  const [isLoading, setLoading] = useState(true);
+  const [adminList, setAdminList] = useState(""); // state to hold the list of admins
+  const [isLoading, setLoading] = useState(true); // state to determine whether we are still waiting on the list of admins
 
   const adminRef = firebase.database().ref("Admins"); // reference to the admin list in firebase (the whitelist)
 
+  // function to get the lsit of admins from firebase
   const getAdminList = async () => {
     const list = []; // to temporarily hold the admin list
     adminRef.on("value", (snapshot) => {
@@ -101,13 +104,11 @@ function LoginScreen({ navigation }) {
             <>
               <AppTextInput
                 placeholder="Email"
-                // value={email}
                 onChangeText={handleChange("email")}
                 style={styles.input}
               />
               <AppTextInput
                 placeholder="Password"
-                // value={password}
                 onChangeText={handleChange("password")}
                 style={styles.input}
                 secureTextEntry // to hide the password as it's typed

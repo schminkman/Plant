@@ -1,12 +1,14 @@
-import React from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+// import React from "react";
+// import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
-function HomeScreen(props) {
-  return (
-    <NavigationContainer>
-      <AuthNavigator />
-    </NavigationContainer>
-  );
-}
+// // component which renderes the auth navigator
+// // this is the component which is rendered by App.js by default when the application loads
+// function HomeScreen(props) {
+//   return (
+//     <NavigationContainer>
+//       <AuthNavigator />
+//     </NavigationContainer>
+//   );
+// }
 
-export default HomeScreen;
+// export default HomeScreen;

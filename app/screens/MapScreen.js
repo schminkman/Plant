@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, SafeAreaView, StyleSheet } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
-import { Picker } from "@react-native-picker/picker";
 
-import AppText from "../components/AppText";
-import Card from "../components/Card";
-import TextCard from "../components/TextCard";
 import colors from "../config/colors";
 import firebase from "../../firebase";
-import LogCard from "../components/LogCard";
-import AppCallout from "../components/AppCallout";
-import AppButton from "../components/AppButton";
-import AppPicker from "../components/AppPicker";
-// import mapStyle from "../config/mapStyle";
 
+import AppCallout from "../components/AppCallout";
+import AppPicker from "../components/AppPicker";
+import AppText from "../components/AppText";
+
+// screen component which serves as the map screen, contains the interactive map and map markers
 function MapScreen(props) {
-  const [sightingList, setSightingList] = useState(null);
-  const [supportedSpecies, setSupportedSpecies] = useState(null);
-  const [species, setSpecies] = useState("");
-  // const [filter, setFilter] = useState(null);
+  const [sightingList, setSightingList] = useState(null); // state to hold the list of sightings form the database
+  const [supportedSpecies, setSupportedSpecies] = useState(null); // state to hold the list of supported species, from which to filter from
+  const [species, setSpecies] = useState(""); // state to hold the currently selected species for which the filter functions
 
   const supportedRef = firebase.database().ref("Species List"); // reference to supported species in database
 
@@ -48,6 +37,7 @@ function MapScreen(props) {
         supportedList.push(speciesVal);
         i = i + 1;
       }
+      // adding noFilter as an option, of this form so that our AppPicker knows how to deal with it
       let noFilter = {
         label: "No Filter",
         value: i + 1,
@@ -76,9 +66,6 @@ function MapScreen(props) {
         }
       }
       setSightingList(sightingList);
-      // console.log("speciesTitle in function: ");
-      // console.log(species);
-      // setSpecies(filter);
     });
   };
 
@@ -105,8 +92,6 @@ function MapScreen(props) {
       setSpecies(item.label);
       getSpeciesFilter(item.label);
     }
-
-    // console.log(species);
   };
 
   // get the sightings from the database and enter them into an array of sighting objects
@@ -131,8 +116,6 @@ function MapScreen(props) {
           initialRegion={{
             latitude: 33.366,
             longitude: -89.518,
-            // latitudeDelta: 0.0922,
-            // longitudeDelta: 0.0421,
             latitudeDelta: 2,
             longitudeDelta: 2,
           }}

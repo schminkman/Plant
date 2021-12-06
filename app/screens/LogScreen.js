@@ -6,24 +6,28 @@ import {
   ScrollView,
   Button,
   RefreshControl,
-  // LogBox,
+  LogBox,
 } from "react-native";
 
 import colors from "../config/colors";
 import firebase from "../../firebase";
+import routes from "../navigation/routes";
 
-import LogCard from "../components/LogCard";
 import AppButton from "../components/AppButton";
 import AppPicker from "../components/AppPicker";
 import AppText from "../components/AppText";
-import routes from "../navigation/routes";
-// LogBox.ignoreAllLogs();
+import LogCard from "../components/LogCard";
+
+LogBox.ignoreAllLogs(); // placed here for use during presentation
+// note: there is currently an error which displays on the virtual device, but
+// does not actually typically affect the functionality of the application
 
 // scroll to refresh from docs - https://reactnative.dev/docs/refreshcontrol
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
+// screen component which serves as the logscreen for the typical user
 function LogScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false); // state to handle refreshing page
   const [supportedSpecies, setSupportedSpecies] = useState(); // state to hold the list of supported species for the filter
@@ -201,9 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    // flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
     left: 100,
   },
   container: {

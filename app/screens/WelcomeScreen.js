@@ -1,17 +1,14 @@
 import React from "react";
-import { ImageBackground, View, StyleSheet, Image } from "react-native";
-import {
-  NavigationHelpersContext,
-  useNavigation,
-} from "@react-navigation/core";
+import { ImageBackground, StyleSheet, Image } from "react-native";
 
-import AppButton from "../components/AppButton";
-import colors from "../config/colors";
 import routes from "../navigation/routes";
 
-function WelcomeScreen({ navigation }) {
-  // const navigation = useNavigation;
+import AppButton from "../components/AppButton";
 
+// screen component which serves as the landing screen for the application
+// here, the user can choose to either log in or sign up
+// originally built with the help of: https://codewithmosh.com/courses/the-ultimate-react-native-course-part1/lectures/16762478
+function WelcomeScreen({ navigation }) {
   return (
     <ImageBackground
       blurRadius={3}

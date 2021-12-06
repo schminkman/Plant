@@ -1,53 +1,46 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Image,
-  TextInput,
-  View,
-  Button,
-  TouchableOpacity,
-} from "react-native";
-import { IconButton, Colors } from "react-native-paper";
+import { StyleSheet, Image, View } from "react-native";
+import { IconButton } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import "firebase/storage";
 import * as Location from "expo-location";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import * as Firebase from "firebase";
+
+import colors from "../config/colors";
+import firebase from "../../firebase";
+import routes from "../navigation/routes";
 
 import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
 import AppPicker from "../components/AppPicker";
 import AppButton from "../components/AppButton";
-import colors from "../config/colors";
-import firebase from "../../firebase";
-import * as Firebase from "firebase";
-import routes from "../navigation/routes";
 
+// array of type objects, from which the user should select
+// of this form so that our AppPicker can handle them
 const typeCats = [
   { label: "Animal", value: 1 },
   { label: "Plant", value: 2 },
 ];
 
-const sightingRef = firebase.database().ref("Sightings"); // sightings ref
+const sightingRef = firebase.database().ref("Sightings"); // sighting list ref
 
 function AddSightingScreen({ navigation }) {
-  const [species, setSpecies] = useState("");
-  const [speciesLabel, setSpeciesLabel] = useState("");
-  const [speciesType, setSpeciesType] = useState("");
-  const [sightingNotes, setSightingNotes] = useState("");
-  const [image, setImage] = useState(null);
-  const [imageUUID, setImageUUID] = useState("");
-  const [identifier, setIdentifier] = useState(0);
-  const [location, setLocation] = useState(null);
-  const [coarseLocation, setCoarseLocation] = useState(null);
-  const [supportedSpecies, setSupportedSpecies] = useState(null);
-  const [valid, setValid] = useState(false);
+  const [species, setSpecies] = useState(""); // state to hold the current species object
+  const [speciesLabel, setSpeciesLabel] = useState(""); // state to hold the name of the current species
+  const [speciesType, setSpeciesType] = useState(""); // state to hold the current species type (animal, plant)
+  const [sightingNotes, setSightingNotes] = useState(""); // state to hold the current notes
+  const [image, setImage] = useState(null); // state to hold the current image
+  const [imageUUID, setImageUUID] = useState(""); // state to hold the UUID for the current image
+  const [identifier, setIdentifier] = useState(0); // state to hold the ID of the sighting
+  const [location, setLocation] = useState(null); // state to hold the user's location
+  const [coarseLocation, setCoarseLocation] = useState(null); // state to hold the user's coarse location
+  const [supportedSpecies, setSupportedSpecies] = useState(null); // state to hold the list of supported species, from which the user picks
+  const [valid, setValid] = useState(false); // state to handle form validation
 
-  // function to get user's location permission and location
+  // function to get user's location permission and location using expo-location package
   // citation: https://codewithmosh.com/courses/955852/lectures/17711040
   const getLocation = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
-    // console.log("granted: " + granted);
     if (!granted) {
       console.log("PERM NOT GRANTED!!");
       return;
@@ -58,16 +51,12 @@ function AddSightingScreen({ navigation }) {
     const { coords } = await Location.getLastKnownPositionAsync();
     const latitude = coords.latitude;
     const longitude = coords.longitude;
-    // console.log("COORDS: "); // for debugging
-    // console.log(latitude);
-    // console.log(longitude);
     setLocation({ latitude, longitude });
 
     // setting coarse location using reverseGeocodeAsync
     let coarseInfo = await Location.reverseGeocodeAsync(coords);
     let cityState = coarseInfo[0].city + ", " + coarseInfo[0].region;
     setCoarseLocation(cityState);
-    // console.log("Coordinates: " + location);
   };
 
   // calling getLocation() in useEffect function, calling only once
@@ -113,8 +102,6 @@ function AddSightingScreen({ navigation }) {
       quality: 1,
     });
 
-    // console.log(result.uri);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -122,7 +109,7 @@ function AddSightingScreen({ navigation }) {
 
   // https://www.youtube.com/watch?v=XxZO7151HYc&ab_channel=Voldy
   // (this function was found on stack overflow, but I cannot find a link to that post... it is referenced in this video)
-
+  // this function handles image upload as a BLOB
   const uploadImage = async () => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -220,11 +207,9 @@ function AddSightingScreen({ navigation }) {
 
   ///////////////////// end handling getting and setting supported species list
 
-  //
   // add sighting to database
   const createSighting = () => {
     const sightingRef = firebase.database().ref("Sightings"); // sightings ref
-    console.log(identifier);
     const sighting = {
       // the object we will push
       species: speciesLabel,
@@ -267,12 +252,6 @@ function AddSightingScreen({ navigation }) {
   return (
     <View>
       <View style={styles.container}>
-        {/* <AppTextInput
-          icon="badge-account-outline"
-          placeholder="Species Name"
-          onChangeText={(text) => handleOnChangeSpecies(text)}
-          value={species}
-        /> */}
         <AppPicker
           selectedItem={species}
           onSelectItem={(item) => handleOnChangeSpecies(item)}
@@ -287,7 +266,6 @@ function AddSightingScreen({ navigation }) {
           icon="file-tree-outline"
           placeholder="Species Type"
         />
-        {/* <AppImagePicker /> */}
         <React.Fragment>
           <View style={styles.imagepicker}>
             <AppText style={styles.text}>Upload Image</AppText>
@@ -305,7 +283,6 @@ function AddSightingScreen({ navigation }) {
             />
           )}
         </React.Fragment>
-        {/* <AppButton title="upload image" onPress={uploadImage} /> */}
         <AppTextInput
           icon="square-edit-outline"
           placeholder="Notes..."
@@ -341,7 +318,6 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
     alignItems: "center",
-    // justifyContent: "center",
   },
   icons: {
     alignSelf: "flex-start",
@@ -351,7 +327,6 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     fontSize: 18,
     color: colors.black,
-    // alignSelf: "flex-end",
     flex: 1,
   },
 });

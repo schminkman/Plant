@@ -18,13 +18,20 @@ import colors from "../config/colors";
 import AppButton from "./AppButton";
 import PickerOption from "./PickerOption";
 
-function AppPicker({ icon, items, onSelectItem, placeholder, selectedItem }) {
+function AppPicker({
+  icon,
+  items,
+  onSelectItem,
+  placeholder,
+  selectedItem,
+  color = "grey",
+}) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <React.Fragment>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors[color] }]}>
           {icon && (
             <MaterialCommunityIcons
               name={icon}

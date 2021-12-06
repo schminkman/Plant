@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Alert, Button, Image, StyleSheet, View } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import firebase from "../../firebase";
-import AppButton from "../components/AppButton";
 
 import colors from "../config/colors";
 import AppText from "../components/AppText";
 
+// this component is a resuable logcard, which sighting objects can be mapped to
+// in this admin version of the logcard, a delete button is also included
 function A_LogCard({ title, location, source, type, caption, ID }) {
-  const [imageURL, setImageURL] = useState();
-  //   const [ourKey, setOurKey] = useState();
+  const [imageURL, setImageURL] = useState(); // state to hold the imageURI for each sighting
 
+  // function to get the image url for each respective sighting
   const getImage = async (source) => {
     let imageRef = firebase.storage().ref(source);
     imageRef
@@ -19,21 +19,20 @@ function A_LogCard({ title, location, source, type, caption, ID }) {
         setImageURL(url);
       })
       .catch((e) => console.log("error fetching image download URL"));
-    // console.log(imageURL);
     return imageURL;
   };
 
+  // calling getImage in order to go ahead and get the images for each sighting
   getImage(source);
 
+  // reference to the sightings list in the database
   const sightingsRef = firebase.database().ref("Sightings");
 
+  // function which deletes a sighting from the database, based on the ID passed from the A_Log component
   const nowDelete = () => {
     sightingsRef.orderByValue().on("value", (snapshot) => {
       snapshot.forEach((data) => {
-        // console.log("data.val(): ");
-        // console.log(data.val().id);
         if (data.val().id === ID) {
-          //   console.log(data.key);
           let key = data.key;
           sightingsRef.child(key).remove();
         }
@@ -41,6 +40,8 @@ function A_LogCard({ title, location, source, type, caption, ID }) {
     });
   };
 
+  // function to show alert, asking the admin whether he/she is sure about deleting a posting
+  // must select the yes option in order to delete the sighting
   const showAlert = () => {
     Alert.alert("Wait!", "Are you sure you want to delete this sighting?", [
       {
@@ -48,15 +49,18 @@ function A_LogCard({ title, location, source, type, caption, ID }) {
         onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
-      { text: "Yes!", onPress: () => handleDelete() },
+      { text: "Yes!", onPress: () => handleDelete() }, // when yes pressed, call handleDelete()
     ]);
   };
 
-  // handle asking the admin if they are sure they wish to delete a sighting
+  // handle asking the admin if they are sure they wish to delete a sighting, calling showAlert()
   const handleDeleteSpecies = () => {
     showAlert();
   };
 
+  // calling nowDelete function in order to delete the sighting
+  // it should be noted that, for whatever reason, I couldn't get this to work without routing the delete function
+  // through each of these handler functions
   const handleDelete = () => {
     nowDelete();
   };

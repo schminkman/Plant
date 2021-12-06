@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Modal, ScrollView } from "react-native";
+
+import colors from "../config/colors";
 import firebase from "../../firebase";
 
 import AppButton from "../components/AppButton";
-import Card from "../components/Card";
-import colors from "../config/colors";
-import TextCard from "../components/TextCard";
-import AppTextInput from "../components/AppTextInput";
 import AppText from "../components/AppText";
+import AppTextInput from "../components/AppTextInput";
+import TextCard from "../components/TextCard";
 
 function A_SpeciesList(props) {
   const [species, setSpecies] = useState(""); // state to hold the user input species to be added to list
   const [modalVisible, setModalVisible] = useState(false); // state to manage visibility of modal
-  const [speciesList, setSpeciesList] = useState("");
-  const [identifier, setIdentifier] = useState(0);
+  const [speciesList, setSpeciesList] = useState(""); // state to hold the list of supported species
+  const [identifier, setIdentifier] = useState(0); // state to hold the ID (key/index) of the next species to be added
 
   // create reference for species list in database
   const speciesRef = firebase.database().ref("Species List");
 
-  // get each item in species list from database
+  // get each item in species list from database when component is rendered
   useEffect(() => {
     speciesRef.on("value", (snapshot) => {
-      // const elements = Object.keys(snapshot.val()).length;
       const list = [];
       snapshot.forEach((data) => {
-        // console.log(data.val());
-        // list.push(data.val().species.toString());
         list.push(data.val());
       });
       console.log(list);
       setSpeciesList(list);
-      // console.log(speciesList);
     });
   }, []);
 
@@ -68,8 +64,6 @@ function A_SpeciesList(props) {
       .limitToLast(1)
       .on("value", (snapshot) => {
         snapshot.forEach((data) => {
-          // console.log("data.val().id: ");
-          // console.log(data.val().id);
           num = data.val().id + 1;
           setIdentifier(num);
         });
@@ -80,10 +74,7 @@ function A_SpeciesList(props) {
   const deleteSpecies = async (index) => {
     speciesRef.on("value", (snapshot) => {
       snapshot.forEach((data) => {
-        // console.log("data.val(): ");
-        // console.log(data.val().id);
         if (data.val().id === index) {
-          //   console.log(data.key);
           const key = data.key;
           speciesRef.child(key).remove();
         }
@@ -91,10 +82,12 @@ function A_SpeciesList(props) {
     });
   };
 
+  // below, we are mapping each species object from the species list to a TextCard component, which also contains a prop
+  // to set the title of the delete button
   return (
     <View style={styles.top}>
       <View style={styles.list}>
-        <ScrollView style={styles.scroll}>
+        <ScrollView>
           {speciesList ? (
             speciesList.map((species, index) => (
               <TextCard
@@ -173,10 +166,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: colors.black,
-  },
-  scroll: {
-    // paddingTop: 40,
-    // paddingBottom: 100,
   },
   text: {
     alignItems: "center",

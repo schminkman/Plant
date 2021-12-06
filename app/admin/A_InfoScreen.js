@@ -1,14 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { Button } from "react-native-elements";
+import { StyleSheet, SafeAreaView } from "react-native";
 
 import { auth } from "../../firebase";
-
-import AppText from "../components/AppText";
-import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 
+import AppButton from "../components/AppButton";
+import AppText from "../components/AppText";
+
+// screen component which displays the current user's email address and provides a button
+// which will log the user out
 function A_InfoScreen({ navigation }) {
+  // function to handle the logout and navigate back to the welcome screen
   const handleLogOut = () => {
     auth.signOut().then(() => {
       navigation.replace(routes.WELCOME);
@@ -19,7 +21,6 @@ function A_InfoScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <AppText>Loggin in as: {auth.currentUser?.email}</AppText>
       <AppText style={styles.admin}>[Administrator]</AppText>
-      {/* <Button title="Log Out" type="solid" onPress={handleLogOut} /> */}
       <AppButton title="Log Out" onPress={handleLogOut} />
     </SafeAreaView>
   );

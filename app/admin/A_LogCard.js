@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Alert, Button, Image, StyleSheet, View } from "react-native";
 import firebase from "../../firebase";
 
 import colors from "../config/colors";
+
 import AppText from "../components/AppText";
 
 // this component is a resuable logcard, which sighting objects can be mapped to

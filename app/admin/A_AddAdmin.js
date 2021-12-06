@@ -1,29 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView, Modal } from "react-native";
 
+import colors from "../config/colors";
+import firebase from "../../firebase";
+
 import AppButton from "../components/AppButton";
 import AppText from "../components/AppText";
 import AppTextInput from "../components/AppTextInput";
 import TextCard from "../components/TextCard";
-import firebase from "../../firebase";
-import { auth } from "../../firebase";
-import colors from "../config/colors";
 
+// screen component which contains the current list of admins, and allows the user to add additonal admins by email address
 function A_AddAdmin(props) {
   const [admin, setAdmin] = useState(""); // state to hold the user input species to be added to list
   const [modalVisible, setModalVisible] = useState(false); // state to manage visibility of modal
-  const [adminList, setAdminList] = useState("");
-  const [userList, setUserList] = useState(null);
-  const [identifier, setIdentifier] = useState(0);
-
-  // create reference for the current user              /////               // useful alternative for login navigation ?
-  //   const user = firebase.auth().currentUser.uid;
-  //   console.log("User: ");
-  //   console.log(user);
+  const [adminList, setAdminList] = useState(""); // state to hold the list of admins
+  const [userList, setUserList] = useState(null); // state to hold the list of all users, from the database
+  const [identifier, setIdentifier] = useState(0); // state to hold the ID (key/index) of the next admin to be added
 
   // get the list of users from the database
   const getUsers = () => {
-    const userRef = firebase.database().ref("Users");
+    const userRef = firebase.database().ref("Users"); // reference the users list from the database
 
     const list = [];
     userRef.on("value", (snapshot) => {
@@ -34,7 +30,7 @@ function A_AddAdmin(props) {
     setUserList(list);
   };
 
-  // call getUsers, to get the list of users when the page is opened
+  // call getUsers, when the component renders, to get the list of users when the page is opened
   useEffect(() => {
     getUsers();
   }, []);
@@ -54,64 +50,52 @@ function A_AddAdmin(props) {
   const checkID = (userid) => {
     for (let i = 0; i < userList.length; i++) {
       let id = userList[i].uid;
-      //   console.log(" looking for: " + userid);
-      //   console.log("found: " + userList[i].uid);
       if (userid === id) {
-        // console.log("SUCCESS HERE");
         return true;
       }
     }
     return false;
   };
 
-  // create reference for species list in database
+  // create reference for admin list in database
   const adminRef = firebase.database().ref("Admins");
 
-  // get each item in species list from database
+  // get each item in admin list from database
   useEffect(() => {
     adminRef.on("value", (snapshot) => {
       const list = [];
       snapshot.forEach((data) => {
         list.push(data.val());
       });
-      //   console.log(list);
       setAdminList(list);
     });
   }, []);
 
-  // add species to species list
+  // add admin to admin list
   const createAdmin = (tempID) => {
     let uid = tempID;
-    console.log("tempID here: " + tempID);
     const newAdmin = {
       id: identifier,
       email: admin,
       uid: uid,
     };
-
-    console.log("New Admin to be added: ");
-    console.log(newAdmin);
-
     adminRef.push(newAdmin); // push to database
   };
 
   // handle click "add admin" button
-
   const handleClickButton = () => {
     setModalVisible(true);
     getUsers();
   };
 
-  // set species state to the text input by user
+  // set admin state to the email address input by user
   const handleOnChangeAdmin = (text) => {
     setAdmin(text);
   };
 
-  // when "Add to List" button is pressed, add species to species list in database and close the modal
+  // when "Add to List" button is pressed, add admin to admin list in database and close the modal
   const handleCreateAdmin = () => {
-    // console.log("admin currently: " + admin);
     const tempID = getUID(admin);
-    console.log("tempID: " + tempID);
     let success = checkID(tempID);
     if (success) {
       createAdmin(tempID);
@@ -122,7 +106,6 @@ function A_AddAdmin(props) {
       );
     }
 
-    // createAdmin();
     setModalVisible(false);
   };
 
@@ -158,6 +141,8 @@ function A_AddAdmin(props) {
     });
   };
 
+  // below, we are mapping each admin object from the admin list (in firebase) to a TextCard
+  // additionally, each text card has a button which will delete from the admin list the ID of the admin associated with that button
   return (
     <View style={styles.top}>
       <View style={styles.list}>
@@ -240,14 +225,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: colors.black,
-  },
-  scroll: {
-    // paddingTop: 40,
-    // paddingBottom: 100,
-  },
-  text: {
-    alignItems: "center",
-    justifyContent: "center",
   },
   top: {
     height: "90%",

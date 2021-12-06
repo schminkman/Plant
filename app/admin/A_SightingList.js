@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   SafeAreaView,
-  View,
   StyleSheet,
   ScrollView,
-  Button,
   RefreshControl,
 } from "react-native";
 
 import colors from "../config/colors";
-import firebase from "../../firebase";
 
 import A_Log from "./A_Log";
-import AppButton from "../components/AppButton";
-import routes from "../navigation/routes";
-import SightingList from "../components/SightingList";
 
 // scroll to refresh from docs - https://reactnative.dev/docs/refreshcontrol
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
+// this component renders the A_Log inside of a scrollview
 function A_SightingList({ navigation }) {
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false); // state to handle refreshing
 
+  // function to handle pull to refresh
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
@@ -39,13 +35,6 @@ function A_SightingList({ navigation }) {
       >
         <A_Log />
       </ScrollView>
-      {/* <View style={styles.buttonContainer}>
-        <AppButton
-          title="Delete Sightings"
-          onPress={() => navigation.navigate(routes.ADD_SIGHTING)}
-          width="100%"
-        />
-      </View> */}
     </SafeAreaView>
   );
 }

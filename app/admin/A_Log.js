@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-import colors from "../config/colors";
 import firebase from "../../firebase";
 
 import A_LogCard from "./A_LogCard";
-import AppButton from "../components/AppButton";
-import routes from "../navigation/routes";
 import AppText from "../components/AppText";
 
 // sources used to aid in the creation of this component: https://www.youtube.com/watch?v=v0TKYSkZ2tI&ab_channel=DailyWebCoding
 
+// this component gets each of the sightings from the database and maps each of those objects to an A_Log component
 function A_Log() {
-  const [sightingList, setSightingList] = useState();
+  const [sightingList, setSightingList] = useState(); // state to hold the sightingList
 
+  // getting the sightings from the database inside of a useEffect function, so that we get the sightings
+  // when this component is rendered
   useEffect(() => {
     const sightingRef = firebase.database().ref("Sightings");
     sightingRef.on("value", (snapshot) => {
@@ -26,6 +26,9 @@ function A_Log() {
     });
   }, []);
 
+  // below, we are checking to see if the sightingList exists, and if so
+  // are mapping that list to A_LogCard components, making sure to pass ID (unlike the typical user's logcard)
+  // in order that we are able to know which delete button goes with which sighting
   return (
     <View style={styles.list}>
       {sightingList ? (
